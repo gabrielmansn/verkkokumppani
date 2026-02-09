@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tilaus | Verkkokumppani</title>
     <meta name="robots" content="noindex, nofollow">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;600&family=Libre+Baskerville:wght@400;700&family=Roboto:wght@300;400;500&family=Montserrat:wght@400;500;600&family=Cinzel:wght@400;600&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600&family=Great+Vibes&family=Bebas+Neue&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a5f4a;
@@ -16,7 +16,6 @@
             --bg-warm: #f5f3f0;
             --border: #e0ddd8;
             --error: #dc2626;
-            --success: #16a34a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,7 +30,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 8px;
@@ -104,7 +103,7 @@
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             color: var(--text);
             margin-bottom: 0.5rem;
         }
@@ -165,7 +164,114 @@
             gap: 1rem;
         }
 
-        /* Parempi tiedostojen lataus */
+        /* Tyylin valinta */
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .style-option { position: relative; cursor: pointer; }
+
+        .style-option input { position: absolute; opacity: 0; }
+
+        .style-card {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            background: white;
+            height: 100%;
+        }
+
+        .style-option input:checked + .style-card {
+            border-color: var(--primary);
+            background: var(--bg-warm);
+            box-shadow: 0 8px 25px rgba(26, 95, 74, 0.15);
+        }
+
+        .style-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .style-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .style-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Fontin ja värin valinta */
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option-card {
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background: var(--bg-warm);
+        }
+
+        .option-card input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .font-preview {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .font-name {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .color-preview {
+            height: 60px;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .color-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* Kuvat */
         .file-upload-area {
             border: 2px dashed var(--border);
             border-radius: 12px;
@@ -182,12 +288,6 @@
             background: var(--bg-warm);
         }
 
-        .file-upload-area.dragover {
-            border-color: var(--primary);
-            background: rgba(26, 95, 74, 0.05);
-            transform: scale(1.02);
-        }
-
         .file-upload-area input[type="file"] {
             position: absolute;
             top: 0;
@@ -198,16 +298,7 @@
             cursor: pointer;
         }
 
-        .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        .upload-text {
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
+        .upload-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
 
         .upload-text strong {
             display: block;
@@ -221,21 +312,12 @@
             font-size: 0.95rem;
         }
 
-        .upload-limit {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-top: 1rem;
-        }
-
-        /* Kuvien esikatselu */
         .image-preview-container {
             margin-top: 1.5rem;
             display: none;
         }
 
-        .image-preview-container.has-images {
-            display: block;
-        }
+        .image-preview-container.has-images { display: block; }
 
         .preview-header {
             display: flex;
@@ -244,8 +326,6 @@
             margin-bottom: 1rem;
             padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--border);
-            font-weight: 500;
-            color: var(--text);
         }
 
         .clear-all-btn {
@@ -256,17 +336,11 @@
             border-radius: 4px;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .clear-all-btn:hover {
-            background: var(--error);
-            color: white;
         }
 
         .image-preview-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 1rem;
         }
 
@@ -276,13 +350,6 @@
             border-radius: 8px;
             overflow: hidden;
             border: 2px solid var(--border);
-            transition: all 0.3s;
-        }
-
-        .image-preview-item:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .image-preview-item img {
@@ -295,140 +362,21 @@
             position: absolute;
             top: 4px;
             right: 4px;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             background: rgba(220, 38, 38, 0.9);
             color: white;
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
+            font-size: 1rem;
             opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .image-preview-item:hover .image-remove-btn {
-            opacity: 1;
-        }
+        .image-preview-item:hover .image-remove-btn { opacity: 1; }
 
-        .image-remove-btn:hover {
-            background: #b91c1c;
-            transform: scale(1.1);
-        }
-
-        .image-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 0.5rem;
-            font-size: 0.75rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .file-upload-area.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .color-options {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .color-option { position: relative; cursor: pointer; }
-
-        .color-option input { position: absolute; opacity: 0; }
-
-        .color-box {
-            height: 70px;
-            border-radius: 4px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .color-option input:checked + .color-box {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .color-option input:checked + .color-box::after {
-            content: '';
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 20px;
-            height: 20px;
-            background: var(--primary);
-            border-radius: 50%;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
-            background-size: 12px;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .color-label {
-            text-align: center;
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-
-        .style-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .style-option { position: relative; cursor: pointer; }
-
-        .style-option input { position: absolute; opacity: 0; }
-
-        .style-card {
-            border: 2px solid var(--border);
-            border-radius: 4px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .style-option input:checked + .style-card {
-            border-color: var(--primary);
-            background: var(--bg-warm);
-        }
-
-        .style-letter {
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .style-name { font-weight: 600; color: var(--text); margin-bottom: 0.25rem; font-size: 0.95rem; }
-
-        .style-desc { font-size: 0.8rem; color: var(--text-light); }
-
+        /* Navigointi */
         .button-group {
             display: flex;
             justify-content: space-between;
@@ -463,13 +411,51 @@
 
         .btn-primary:hover { background: var(--primary-dark); }
 
-        @media (max-width: 640px) {
+        .btn-text {
+            background: transparent;
+            color: var(--primary);
+            text-decoration: underline;
+            padding: 0.5rem;
+        }
+
+        /* Yhteenveto */
+        .summary-box {
+            background: var(--bg-warm);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .summary-item:last-child { border-bottom: none; }
+
+        .change-link {
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        /* Tyylien värit */
+        .klassinen-bg { background: linear-gradient(135deg, #f5f5dc 0%, #8b7355 100%); }
+        .moderni-bg { background: linear-gradient(135deg, #ffffff 0%, #333333 100%); }
+        .luksus-bg { background: linear-gradient(135deg, #ffd700 0%, #1a1a1a 100%); }
+        .kotoisa-bg { background: linear-gradient(135deg, #f4e4c1 0%, #8b6914 100%); }
+        .elegantti-bg { background: linear-gradient(135deg, #ffb6c1 0%, #4a4a4a 100%); }
+        .creative-bg { background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%); }
+
+        @media (max-width: 768px) {
             body { padding: 1rem; }
             .header { padding: 2rem 1.5rem; }
             .form-container { padding: 1.5rem; }
+            .style-grid { grid-template-columns: repeat(2, 1fr); }
+            .option-grid { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
-            .color-options { grid-template-columns: repeat(2, 1fr); }
-            .style-grid { grid-template-columns: 1fr; }
             .button-group { flex-direction: column-reverse; gap: 1rem; }
             .btn { width: 100%; }
         }
@@ -480,24 +466,28 @@
     <div class="container">
         <div class="header">
             <h1>Verkkosivujen tilaus</h1>
-            <p>Täytä tiedot ja lisää kuvat. Saat vahvistuksen sähköpostiin.</p>
+            <p>Valitse oma polkusi ja räätälöi sivustosi</p>
         </div>
 
         <div class="form-container">
-            <div class="progress-bar">
+            <div class="progress-bar" id="progressBar">
                 <div class="progress-step active" data-step="1">1</div>
                 <div class="progress-step" data-step="2">2</div>
                 <div class="progress-step" data-step="3">3</div>
                 <div class="progress-step" data-step="4">4</div>
+                <div class="progress-step" data-step="5">5</div>
             </div>
 
-            <form name="tilaus" method="POST" data-netlify="true" enctype="multipart/form-data" action="/kiitos">
+            <form name="tilaus" method="POST" data-netlify="true" enctype="multipart/form-data" action="/kiitos" id="tilausForm">
                 <input type="hidden" name="form-name" value="tilaus">
+                <input type="hidden" name="valittu_tyyli" id="valittuTyyli">
+                <input type="hidden" name="valittu_fontti" id="valittuFontti">
+                <input type="hidden" name="valittu_variteema" id="valittuVariteema">
                 
-                <!-- Section 1: Perustiedot -->
-                <div class="section active" data-section="1">
-                    <h2 class="section-title">Yrityksen tiedot</h2>
-                    <p class="section-subtitle">Perustiedot yrityksestäsi</p>
+                <!-- STEP 1: Perustiedot -->
+                <div class="section active" data-section="1" data-step-name="perustiedot">
+                    <h2 class="section-title">Perustiedot</h2>
+                    <p class="section-subtitle">Kerro meille yrityksestäsi</p>
                     
                     <div class="form-group">
                         <label>Yrityksen nimi <span class="required">*</span></label>
@@ -530,7 +520,7 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Puhelinnumero <span class="required">*</span></label>
+                            <label>Puhelin <span class="required">*</span></label>
                             <input type="tel" name="puhelin" required placeholder="040 123 4567">
                         </div>
                         <div class="form-group">
@@ -541,18 +531,121 @@
 
                     <div class="button-group">
                         <div></div>
-                        <button type="button" class="btn btn-primary" onclick="nextSection()">Seuraava</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Seuraava: Valitse tyyli →</button>
                     </div>
                 </div>
 
-                <!-- Section 2: Palvelut -->
-                <div class="section" data-section="2">
-                    <h2 class="section-title">Palvelut ja sisältö</h2>
-                    <p class="section-subtitle">Kerro mitä tarjoat</p>
+                <!-- STEP 2: Tyylin valinta -->
+                <div class="section" data-section="2" data-step-name="tyyli">
+                    <h2 class="section-title">Valitse tyyli</h2>
+                    <p class="section-subtitle">Millaisen ilmeen haluat sivuillesi?</p>
+                    
+                    <div class="style-grid">
+                        <label class="style-option" onclick="selectStyle('klassinen')">
+                            <input type="radio" name="tyyli_valinta" value="klassinen" required>
+                            <div class="style-card">
+                                <div class="style-icon klassinen-bg">K</div>
+                                <div class="style-name">Klassinen</div>
+                                <div class="style-desc">Ajaton elegance ja perinteinen tyyli. Sopii yrityksille, jotka haluavat luotettavan ja arvokkaan imagon.</div>
+                            </div>
+                        </label>
+
+                        <label class="style-option" onclick="selectStyle('moderni')">
+                            <input type="radio" name="tyyli_valinta" value="moderni">
+                            <div class="style-card">
+                                <div class="style-icon moderni-bg">M</div>
+                                <div class="style-name">Moderni</div>
+                                <div class="style-desc">Puhtaat linjat ja minimalistinen design. Täydellinen nykyaikaisille yrityksille, jotka arvostavat selkeyttä.</div>
+                            </div>
+                        </label>
+
+                        <label class="style-option" onclick="selectStyle('luksus')">
+                            <input type="radio" name="tyyli_valinta" value="luksus">
+                            <div class="style-card">
+                                <div class="style-icon luksus-bg">L</div>
+                                <div class="style-name">Luksus</div>
+                                <div class="style-desc">Kultaa, mustaa ja premium-tunnelmaa. Korosta laatua ja eksklusiivisuutta tämän tyylikkään ilmeen avulla.</div>
+                            </div>
+                        </label>
+
+                        <label class="style-option" onclick="selectStyle('kotoisa')">
+                            <input type="radio" name="tyyli_valinta" value="kotoisa">
+                            <div class="style-card">
+                                <div class="style-icon kotoisa-bg">O</div>
+                                <div class="style-name">Kotoisa</div>
+                                <div class="style-desc">Lämpimiä sävyjä ja kutsuva tunnelma. Ihanteellinen yrityksille, jotka haluavat välittää läheisyyttä ja mukavuutta.</div>
+                            </div>
+                        </label>
+
+                        <label class="style-option" onclick="selectStyle('elegantti')">
+                            <input type="radio" name="tyyli_valinta" value="elegantti">
+                            <div class="style-card">
+                                <div class="style-icon elegantti-bg">E</div>
+                                <div class="style-name">Elegantti</div>
+                                <div class="style-desc">Hienostunutta kauneutta ja naisellista charmia. Roosaa, kultaa ja pehmeitä muotoja.</div>
+                            </div>
+                        </label>
+
+                        <label class="style-option" onclick="selectStyle('creative')">
+                            <input type="radio" name="tyyli_valinta" value="creative">
+                            <div class="style-card">
+                                <div class="style-icon creative-bg">C</div>
+                                <div class="style-name">Creative</div>
+                                <div class="style-desc">Rohkeita värejä ja erottuva ilme. Valitse tämä, jos haluat erottua joukosta ja näyttää persoonallisuutesi.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">← Takaisin</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()" id="tyyliSeuraava" disabled>Valitse fontti →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Fontin valinta (tyylin mukaan) -->
+                <div class="section" data-section="3" data-step-name="fontti">
+                    <h2 class="section-title">Valitse fontti</h2>
+                    <p class="section-subtitle" id="fonttiSubtitle">Valitse tyyli ensin</p>
+                    
+                    <div class="option-grid" id="fonttiGrid">
+                        <!-- Fontit generoidaan JavaScriptillä -->
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">← Takaisin</button>
+                        <div>
+                            <button type="button" class="btn btn-text" onclick="goToStep(2)">Vaihda tyyliä</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep()" id="fonttiSeuraava" disabled>Valitse värit →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Värin valinta (tyylin mukaan) -->
+                <div class="section" data-section="4" data-step-name="varit">
+                    <h2 class="section-title">Valitse väriteema</h2>
+                    <p class="section-subtitle" id="variSubtitle">Valitse tyyli ensin</p>
+                    
+                    <div class="option-grid" id="variGrid">
+                        <!-- Värit generoidaan JavaScriptillä -->
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">← Takaisin</button>
+                        <div>
+                            <button type="button" class="btn btn-text" onclick="goToStep(2)">Vaihda tyyliä</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep()" id="variSeuraava" disabled>Täytä tiedot →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 5: Sisältö ja kuvat -->
+                <div class="section" data-section="5" data-step-name="sisalto">
+                    <h2 class="section-title">Sisältö ja kuvat</h2>
+                    <p class="section-subtitle">Kerro palveluistasi ja lisää kuvia</p>
                     
                     <div class="form-group">
                         <label>Palvelut <span class="required">*</span></label>
-                        <textarea name="palvelut" required placeholder="Kuvaile palveluitasi..."></textarea>
+                        <textarea name="palvelut" required placeholder="Kuvaile mitä palveluita tarjoat..."></textarea>
                     </div>
 
                     <div class="form-group">
@@ -560,30 +653,24 @@
                         <textarea name="hinnasto" placeholder="Palvelut ja hinnat..."></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label>Avoinnaoloajat</label>
-                        <input type="text" name="aukiolo" placeholder="Ma-pe 9-17">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Avoinnaoloajat</label>
+                            <input type="text" name="aukiolo" placeholder="Ma-pe 9-17">
+                        </div>
+                        <div class="form-group">
+                            <label>Instagram</label>
+                            <input type="text" name="instagram" placeholder="@yritys">
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Vahvuudet / Erityispiirteet</label>
-                        <textarea name="vahvuudet" placeholder="Mikä tekee teistä erityisen?"></textarea>
+                        <label>Facebook</label>
+                        <input type="text" name="facebook" placeholder="Yrityksen nimi">
                     </div>
 
-                    <div class="button-group">
-                        <button type="button" class="btn btn-secondary" onclick="prevSection()">Takaisin</button>
-                        <button type="button" class="btn btn-primary" onclick="nextSection()">Seuraava</button>
-                    </div>
-                </div>
-
-                <!-- Section 3: Kuvat -->
-                <div class="section" data-section="3">
-                    <h2 class="section-title">Kuvat</h2>
-                    <p class="section-subtitle">Lisää kuvia sivuillesi</p>
-                    
                     <div class="form-group">
-                        <label>Lataa kuvat (valinnainen)</label>
-                        
+                        <label>Lisää kuvat (valinnainen)</label>
                         <div class="file-upload-area" id="dropZone">
                             <input type="file" name="kuvat" id="fileInput" multiple accept="image/*" onchange="handleFiles(this.files)">
                             <div class="upload-icon">📁</div>
@@ -591,111 +678,14 @@
                                 <strong>Klikkaa lisätäksesi kuvia</strong>
                                 <span>tai raahaa ne tähän</span>
                             </div>
-                            <div class="upload-limit">Max 10 kuvaa (JPG, PNG, max 10MB)</div>
                         </div>
                         
                         <div class="image-preview-container" id="imagePreviewContainer">
                             <div class="preview-header">
                                 <span>Valitut kuvat (<span id="imageCount">0</span>)</span>
-                                <button type="button" class="clear-all-btn" onclick="clearAllImages()" id="clearAllBtn" style="display: none;">Poista kaikki</button>
+                                <button type="button" class="clear-all-btn" onclick="clearAllImages()">Poista kaikki</button>
                             </div>
                             <div class="image-preview-grid" id="imagePreviewGrid"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Instagram</label>
-                            <input type="text" name="instagram" placeholder="@yritys">
-                        </div>
-                        <div class="form-group">
-                            <label>Facebook</label>
-                            <input type="text" name="facebook" placeholder="Yrityksen nimi">
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="button" class="btn btn-secondary" onclick="prevSection()">Takaisin</button>
-                        <button type="button" class="btn btn-primary" onclick="nextSection()">Seuraava</button>
-                    </div>
-                </div>
-
-                <!-- Section 4: Ulkoasu -->
-                <div class="section" data-section="4">
-                    <h2 class="section-title">Ulkoasu</h2>
-                    <p class="section-subtitle">Valitse tyyli</p>
-                    
-                    <div class="form-group">
-                        <label>Värimaailma <span class="required">*</span></label>
-                        <div class="color-options">
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="vihrea" required>
-                                <div class="color-box" style="background: linear-gradient(135deg, #1a5f4a 0%, #2d7a62 100%);"></div>
-                                <div class="color-label">Vihreä</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="sininen">
-                                <div class="color-box" style="background: linear-gradient(135deg, #1e3a5f 0%, #3d5a80 100%);"></div>
-                                <div class="color-label">Sininen</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="mustavalkoinen">
-                                <div class="color-box" style="background: linear-gradient(135deg, #1a1a1a 0%, #f5f5f5 100%);"></div>
-                                <div class="color-label">Mustavalkoinen</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="lampima">
-                                <div class="color-box" style="background: linear-gradient(135deg, #8b4513 0%, #d4a574 100%);"></div>
-                                <div class="color-label">Maanläheinen</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="roosa">
-                                <div class="color-box" style="background: linear-gradient(135deg, #8b4a6b 0%, #d4a5b5 100%);"></div>
-                                <div class="color-label">Roosa</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="tumma">
-                                <div class="color-box" style="background: linear-gradient(135deg, #0f1419 0%, #2d3748 100%);"></div>
-                                <div class="color-label">Tumma</div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tyyli <span class="required">*</span></label>
-                        <div class="style-grid">
-                            <label class="style-option">
-                                <input type="radio" name="tyyli" value="moderni" required>
-                                <div class="style-card">
-                                    <div class="style-letter">M</div>
-                                    <div class="style-name">Moderni</div>
-                                    <div class="style-desc">Siistit linjat</div>
-                                </div>
-                            </label>
-                            <label class="style-option">
-                                <input type="radio" name="tyyli" value="klassinen">
-                                <div class="style-card">
-                                    <div class="style-letter">K</div>
-                                    <div class="style-name">Klassinen</div>
-                                    <div class="style-desc">Ajaton elegance</div>
-                                </div>
-                            </label>
-                            <label class="style-option">
-                                <input type="radio" name="tyyli" value="kotoisa">
-                                <div class="style-card">
-                                    <div class="style-letter">O</div>
-                                    <div class="style-name">Kotoisa</div>
-                                    <div class="style-desc">Lämminsydäminen</div>
-                                </div>
-                            </label>
-                            <label class="style-option">
-                                <input type="radio" name="tyyli" value="luksus">
-                                <div class="style-card">
-                                    <div class="style-letter">L</div>
-                                    <div class="style-name">Luksus</div>
-                                    <div class="style-desc">Premium-tunnelma</div>
-                                </div>
-                            </label>
                         </div>
                     </div>
 
@@ -706,18 +696,38 @@
                             <option value="perus">Perus - 150€ + 10€/kk</option>
                             <option value="yritys">Yritys - 390€ + 15€/kk</option>
                             <option value="premium">Premium - 590€ + 25€/kk</option>
-                            <option value="ei_tieda">En ole varma</option>
+                            <option value="ei_tieda">En ole varma - keskustellaan</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Lisätoiveet</label>
-                        <textarea name="toiveet" placeholder="Ajanvaraus, galleria, blogi..."></textarea>
+                        <textarea name="toiveet" placeholder="Ajanvaraus, galleria, blogi, lahjakortit..."></textarea>
+                    </div>
+
+                    <!-- Yhteenveto -->
+                    <div class="summary-box">
+                        <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Valintasi</h3>
+                        <div class="summary-item">
+                            <span>Tyyli:</span>
+                            <span id="summaryTyyli" class="change-link" onclick="goToStep(2)">Vaihda</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Fontti:</span>
+                            <span id="summaryFontti" class="change-link" onclick="goToStep(3)">Vaihda</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Väriteema:</span>
+                            <span id="summaryVari" class="change-link" onclick="goToStep(4)">Vaihda</span>
+                        </div>
                     </div>
 
                     <div class="button-group">
-                        <button type="button" class="btn btn-secondary" onclick="prevSection()">Takaisin</button>
-                        <button type="submit" class="btn btn-primary">Lähetä tilaus</button>
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">← Takaisin</button>
+                        <div>
+                            <button type="button" class="btn btn-text" onclick="goToStep(2)">Vaihda tyyliä</button>
+                            <button type="submit" class="btn btn-primary">Lähetä tilaus</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -725,145 +735,207 @@
     </div>
 
     <script>
-        let currentSection = 1;
-        const totalSections = 4;
+        // Tyylien määrittelyt
+        const tyylit = {
+            klassinen: {
+                nimi: 'Klassinen',
+                fontit: [
+                    { nimi: 'Playfair Display', esimerkki: 'Aa', class: 'Playfair Display' },
+                    { nimi: 'Cormorant Garamond', esimerkki: 'Aa', class: 'Cormorant Garamond' },
+                    { nimi: 'Libre Baskerville', esimerkki: 'Aa', class: 'Libre Baskerville' },
+                    { nimi: 'Merriweather', esimerkki: 'Aa', class: 'Merriweather' },
+                    { nimi: 'Lora', esimerkki: 'Aa', class: 'Lora' }
+                ],
+                varit: [
+                    { nimi: 'Kerma & Tumma vihreä', gradient: 'linear-gradient(135deg, #f5f5dc 0%, #1a5f4a 100%)' },
+                    { nimi: 'Valkoinen & Laivastonsininen', gradient: 'linear-gradient(135deg, #ffffff 0%, #1e3a5f 100%)' },
+                    { nimi: 'Beige & Ruskea', gradient: 'linear-gradient(135deg, #f4e4c1 0%, #8b6914 100%)' },
+                    { nimi: 'Harmaa & Musta', gradient: 'linear-gradient(135deg, #e0e0e0 0%, #1a1a1a 100%)' },
+                    { nimi: 'Kulta & Kerma', gradient: 'linear-gradient(135deg, #ffd700 0%, #f5f5dc 100%)' }
+                ]
+            },
+            moderni: {
+                nimi: 'Moderni',
+                fontit: [
+                    { nimi: 'Inter', esimerkki: 'Aa', class: 'Inter' },
+                    { nimi: 'Roboto', esimerkki: 'Aa', class: 'Roboto' },
+                    { nimi: 'Montserrat', esimerkki: 'Aa', class: 'Montserrat' },
+                    { nimi: 'Raleway', esimerkki: 'Aa', class: 'Raleway' },
+                    { nimi: 'Bebas Neue', esimerkki: 'Aa', class: 'Bebas Neue' }
+                ],
+                varit: [
+                    { nimi: 'Mustavalkoinen', gradient: 'linear-gradient(135deg, #ffffff 0%, #1a1a1a 100%)' },
+                    { nimi: 'Harmaasävyinen', gradient: 'linear-gradient(135deg, #f5f5f5 0%, #4a4a4a 100%)' },
+                    { nimi: 'Sininen & Valkoinen', gradient: 'linear-gradient(135deg, #e8f4f8 0%, #1e3a5f 100%)' },
+                    { nimi: 'Vihreä & Valkoinen', gradient: 'linear-gradient(135deg, #f0f9f4 0%, #1a5f4a 100%)' },
+                    { nimi: 'Oranssi & Harmaa', gradient: 'linear-gradient(135deg, #fff5f0 0%, #ff6b35 100%)' }
+                ]
+            },
+            luksus: {
+                nimi: 'Luksus',
+                fontit: [
+                    { nimi: 'Cinzel', esimerkki: 'Aa', class: 'Cinzel' },
+                    { nimi: 'Playfair Display', esimerkki: 'Aa', class: 'Playfair Display' },
+                    { nimi: 'Cormorant Garamond', esimerkki: 'Aa', class: 'Cormorant Garamond' },
+                    { nimi: 'Libre Baskerville', esimerkki: 'Aa', class: 'Libre Baskerville' },
+                    { nimi: 'Great Vibes', esimerkki: 'Aa', class: 'Great Vibes' }
+                ],
+                varit: [
+                    { nimi: 'Kulta & Musta', gradient: 'linear-gradient(135deg, #ffd700 0%, #1a1a1a 100%)' },
+                    { nimi: 'Samppanja & Laivastonsininen', gradient: 'linear-gradient(135deg, #f7e7ce 0%, #1e3a5f 100%)' },
+                    { nimi: 'Hopea & Tummanharmaa', gradient: 'linear-gradient(135deg, #c0c0c0 0%, #4a4a4a 100%)' },
+                    { nimi: 'Burgundinpunainen & Kulta', gradient: 'linear-gradient(135deg, #800020 0%, #ffd700 100%)' },
+                    { nimi: 'Musta & Valkoinen', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #ffffff 100%)' }
+                ]
+            },
+            kotoisa: {
+                nimi: 'Kotoisa',
+                fontit: [
+                    { nimi: 'Merriweather', esimerkki: 'Aa', class: 'Merriweather' },
+                    { nimi: 'Lora', esimerkki: 'Aa', class: 'Lora' },
+                    { nimi: 'Playfair Display', esimerkki: 'Aa', class: 'Playfair Display' },
+                    { nimi: 'Cormorant Garamond', esimerkki: 'Aa', class: 'Cormorant Garamond' },
+                    { nimi: 'Inter', esimerkki: 'Aa', class: 'Inter' }
+                ],
+                varit: [
+                    { nimi: 'Lämpimä beige', gradient: 'linear-gradient(135deg, #f4e4c1 0%, #d4a574 100%)' },
+                    { nimi: 'Maanläheinen vihreä', gradient: 'linear-gradient(135deg, #e8f5e9 0%, #2d5016 100%)' },
+                    { nimi: 'Puu & Ruskea', gradient: 'linear-gradient(135deg, #deb887 0%, #8b4513 100%)' },
+                    { nimi: 'Terrakotta & Kerma', gradient: 'linear-gradient(135deg, #e2725b 0%, #f5f5dc 100%)' },
+                    { nimi: 'Sinapinkeltainen & Harmaa', gradient: 'linear-gradient(135deg, #ffdb58 0%, #808080 100%)' }
+                ]
+            },
+            elegantti: {
+                nimi: 'Elegantti',
+                fontit: [
+                    { nimi: 'Great Vibes', esimerkki: 'Aa', class: 'Great Vibes' },
+                    { nimi: 'Playfair Display', esimerkki: 'Aa', class: 'Playfair Display' },
+                    { nimi: 'Cormorant Garamond', esimerkki: 'Aa', class: 'Cormorant Garamond' },
+                    { nimi: 'Libre Baskerville', esimerkki: 'Aa', class: 'Libre Baskerville' },
+                    { nimi: 'Cinzel', esimerkki: 'Aa', class: 'Cinzel' }
+                ],
+                varit: [
+                    { nimi: 'Roosa & Kulta', gradient: 'linear-gradient(135deg, #ffb6c1 0%, #ffd700 100%)' },
+                    { nimi: 'Laventeli & Valkoinen', gradient: 'linear-gradient(135deg, #e6e6fa 0%, #ffffff 100%)' },
+                    { nimi: 'Laivastonsininen & Hopea', gradient: 'linear-gradient(135deg, #1e3a5f 0%, #c0c0c0 100%)' },
+                    { nimi: 'Minttu & Valkoinen', gradient: 'linear-gradient(135deg, #f0fff0 0%, #98ff98 100%)' },
+                    { nimi: 'Vanha roosa & Harmaa', gradient: 'linear-gradient(135deg, #c08081 0%, #808080 100%)' }
+                ]
+            },
+            creative: {
+                nimi: 'Creative',
+                fontit: [
+                    { nimi: 'Bebas Neue', esimerkki: 'Aa', class: 'Bebas Neue' },
+                    { nimi: 'Montserrat', esimerkki: 'Aa', class: 'Montserrat' },
+                    { nimi: 'Raleway', esimerkki: 'Aa', class: 'Raleway' },
+                    { nimi: 'Roboto', esimerkki: 'Aa', class: 'Roboto' },
+                    { nimi: 'Playfair Display', esimerkki: 'Aa', class: 'Playfair Display' }
+                ],
+                varit: [
+                    { nimi: 'Rohkea punainen & Sininen', gradient: 'linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%)' },
+                    { nimi: 'Sähkösininen & Keltainen', gradient: 'linear-gradient(135deg, #00d2ff 0%, #ffd700 100%)' },
+                    { nimi: 'Purppura & Oranssi', gradient: 'linear-gradient(135deg, #9b59b6 0%, #f39c12 100%)' },
+                    { nimi: 'Turkoosi & Koralli', gradient: 'linear-gradient(135deg, #40e0d0 0%, #ff7f50 100%)' },
+                    { nimi: 'Neonvihreä & Musta', gradient: 'linear-gradient(135deg, #39ff14 0%, #1a1a1a 100%)' }
+                ]
+            }
+        };
+
+        let currentStep = 1;
+        let selectedStyle = null;
         let selectedFiles = [];
-        const MAX_IMAGES = 10;
 
-        // Drag and drop
-        const dropZone = document.getElementById('dropZone');
-
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        function selectStyle(style) {
+            selectedStyle = style;
+            document.getElementById('valittuTyyli').value = tyylit[style].nimi;
+            document.getElementById('tyyliSeuraava').disabled = false;
+            updateSummary();
         }
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, highlight, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, unhighlight, false);
-        });
-
-        function highlight(e) {
-            dropZone.classList.add('dragover');
-        }
-
-        function unhighlight(e) {
-            dropZone.classList.remove('dragover');
-        }
-
-        dropZone.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        }
-
-        function handleFiles(files) {
-            const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        function generateFontOptions() {
+            if (!selectedStyle) return;
             
-            if (selectedFiles.length + newFiles.length > MAX_IMAGES) {
-                alert(`Voit lisätä enintään ${MAX_IMAGES} kuvaa. Sinulla on jo ${selectedFiles.length} kuvaa.`);
-                return;
+            const grid = document.getElementById('fonttiGrid');
+            const tyyli = tyylit[selectedStyle];
+            
+            document.getElementById('fonttiSubtitle').textContent = `Valitse ${tyyli.nimi.toLowerCase()} tyyliin sopiva fontti`;
+            
+            grid.innerHTML = tyyli.fontit.map((font, index) => `
+                <label class="option-card" onclick="selectFont('${font.nimi}')" id="font-${index}">
+                    <input type="radio" name="fontti_valinta" value="${font.nimi}" required>
+                    <div class="font-preview" style="font-family: '${font.class}'">${font.esimerkki}</div>
+                    <div class="font-name">${font.nimi}</div>
+                </label>
+            `).join('');
+        }
+
+        function selectFont(fontName) {
+            document.getElementById('valittuFontti').value = fontName;
+            document.getElementById('fonttiSeuraava').disabled = false;
+            document.querySelectorAll('#fonttiGrid .option-card').forEach(card => card.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            updateSummary();
+        }
+
+        function generateColorOptions() {
+            if (!selectedStyle) return;
+            
+            const grid = document.getElementById('variGrid');
+            const tyyli = tyylit[selectedStyle];
+            
+            document.getElementById('variSubtitle').textContent = `Valitse ${tyyli.nimi.toLowerCase()} tyyliin sopiva väriteema`;
+            
+            grid.innerHTML = tyyli.varit.map((vari, index) => `
+                <label class="option-card" onclick="selectColor('${vari.nimi}')" id="color-${index}">
+                    <input type="radio" name="vari_valinta" value="${vari.nimi}" required>
+                    <div class="color-preview" style="background: ${vari.gradient}"></div>
+                    <div class="color-name">${vari.nimi}</div>
+                </label>
+            `).join('');
+        }
+
+        function selectColor(colorName) {
+            document.getElementById('valittuVariteema').value = colorName;
+            document.getElementById('variSeuraava').disabled = false;
+            document.querySelectorAll('#variGrid .option-card').forEach(card => card.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            updateSummary();
+        }
+
+        function updateSummary() {
+            if (selectedStyle) {
+                document.getElementById('summaryTyyli').textContent = tyylit[selectedStyle].nimi;
             }
-            
-            selectedFiles = [...selectedFiles, ...newFiles];
-            updateImagePreview();
-            updateFileInput();
-        }
-
-        function updateImagePreview() {
-            const container = document.getElementById('imagePreviewContainer');
-            const grid = document.getElementById('imagePreviewGrid');
-            const countSpan = document.getElementById('imageCount');
-            const clearBtn = document.getElementById('clearAllBtn');
-            const uploadArea = document.getElementById('dropZone');
-            
-            countSpan.textContent = selectedFiles.length;
-            
-            if (selectedFiles.length > 0) {
-                container.classList.add('has-images');
-                clearBtn.style.display = 'block';
-            } else {
-                container.classList.remove('has-images');
-                clearBtn.style.display = 'none';
-            }
-            
-            if (selectedFiles.length >= MAX_IMAGES) {
-                uploadArea.classList.add('disabled');
-            } else {
-                uploadArea.classList.remove('disabled');
-            }
-            
-            grid.innerHTML = '';
-            selectedFiles.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const div = document.createElement('div');
-                    div.className = 'image-preview-item';
-                    div.innerHTML = `
-                        <img src="${e.target.result}" alt="${file.name}">
-                        <button type="button" class="image-remove-btn" onclick="removeImage(${index})" title="Poista">×</button>
-                        <div class="image-name">${file.name}</div>
-                    `;
-                    grid.appendChild(div);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function removeImage(index) {
-            selectedFiles.splice(index, 1);
-            updateImagePreview();
-            updateFileInput();
-        }
-
-        function clearAllImages() {
-            if (confirm('Poista kaikki kuvat?')) {
-                selectedFiles = [];
-                updateImagePreview();
-                updateFileInput();
-            }
-        }
-
-        function updateFileInput() {
-            const fileInput = document.getElementById('fileInput');
-            const dataTransfer = new DataTransfer();
-            selectedFiles.forEach(file => dataTransfer.items.add(file));
-            fileInput.files = dataTransfer.files;
+            const fontti = document.getElementById('valittuFontti').value;
+            const vari = document.getElementById('valittuVariteema').value;
+            if (fontti) document.getElementById('summaryFontti').textContent = fontti;
+            if (vari) document.getElementById('summaryVari').textContent = vari;
         }
 
         function updateProgress() {
             document.querySelectorAll('.progress-step').forEach((step, index) => {
                 step.classList.remove('active', 'completed');
-                if (index + 1 < currentSection) {
+                if (index + 1 < currentStep) {
                     step.classList.add('completed');
-                } else if (index + 1 === currentSection) {
+                } else if (index + 1 === currentStep) {
                     step.classList.add('active');
                 }
             });
         }
 
-        function showSection(n) {
+        function showStep(step) {
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
-            document.querySelector(`[data-section="${n}"]`).classList.add('active');
-            currentSection = n;
+            document.querySelector(`[data-section="${step}"]`).classList.add('active');
+            currentStep = step;
             updateProgress();
             window.scrollTo(0, 0);
         }
 
-        function nextSection() {
-            const currentForm = document.querySelector(`[data-section="${currentSection}"]`);
-            const requiredFields = currentForm.querySelectorAll('[required]');
+        function nextStep() {
+            const currentSection = document.querySelector(`[data-section="${currentStep}"]`);
+            const requiredFields = currentSection.querySelectorAll('[required]');
             let valid = true;
 
             requiredFields.forEach(field => {
@@ -875,17 +947,74 @@
                 }
             });
 
-            if (valid && currentSection < totalSections) {
-                showSection(currentSection + 1);
+            if (!valid) return;
+
+            if (currentStep === 2) generateFontOptions();
+            if (currentStep === 3) generateColorOptions();
+            
+            if (currentStep < 5) {
+                showStep(currentStep + 1);
             }
         }
 
-        function prevSection() {
-            if (currentSection > 1) {
-                showSection(currentSection - 1);
+        function prevStep() {
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
             }
         }
 
+        function goToStep(step) {
+            showStep(step);
+        }
+
+        // Kuvien käsittely
+        function handleFiles(files) {
+            selectedFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+            updateImagePreview();
+        }
+
+        function updateImagePreview() {
+            const container = document.getElementById('imagePreviewContainer');
+            const grid = document.getElementById('imagePreviewGrid');
+            const count = document.getElementById('imageCount');
+            
+            count.textContent = selectedFiles.length;
+            container.classList.toggle('has-images', selectedFiles.length > 0);
+            
+            grid.innerHTML = selectedFiles.map((file, index) => {
+                const url = URL.createObjectURL(file);
+                return `
+                    <div class="image-preview-item">
+                        <img src="${url}" alt="${file.name}">
+                        <button type="button" class="image-remove-btn" onclick="removeImage(${index})">×</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function removeImage(index) {
+            selectedFiles.splice(index, 1);
+            updateImagePreview();
+        }
+
+        function clearAllImages() {
+            selectedFiles = [];
+            updateImagePreview();
+        }
+
+        // Drag and drop
+        const dropZone = document.getElementById('dropZone');
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => {
+            dropZone.addEventListener(e, (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+            });
+        });
+        dropZone.addEventListener('drop', (e) => {
+            handleFiles(e.dataTransfer.files);
+        });
+
+        // Validointi
         document.querySelectorAll('input, textarea, select').forEach(field => {
             field.addEventListener('input', function() {
                 this.style.borderColor = '';
