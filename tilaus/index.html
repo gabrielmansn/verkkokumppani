@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alkukartoitus | Verkkokumppani</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5f4a;
+            --primary-light: #2d7a62;
+            --primary-dark: #0f3d2e;
+            --accent: #c9a227;
+            --text: #1a1a1a;
+            --text-light: #4a4a4a;
+            --bg: #fafafa;
+            --bg-warm: #f5f3f0;
+            --border: #e0ddd8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg-warm);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2.5rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-weight: 300;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            padding: 2.5rem;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+        }
+
+        .progress-step {
+            position: relative;
+            z-index: 1;
+            background: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+
+        .progress-step.active {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .progress-step.completed {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: var(--primary);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.375rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .color-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .color-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .color-box {
+            height: 70px;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .color-option input:checked + .color-box {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .color-option input:checked + .color-box::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+            background-size: 12px;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .color-label {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .style-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .style-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .style-card {
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .style-option input:checked + .style-card {
+            border-color: var(--primary);
+            background: var(--bg-warm);
+        }
+
+        .style-letter {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .style-name {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .style-desc {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 4rem 2.5rem;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+        }
+
+        .success-message h2 {
+            font-size: 1.75rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .success-message p {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .success-note {
+            background: var(--bg-warm);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .success-note strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .color-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .style-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column-reverse;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Verkkosivujen alkukartoitus</h1>
+            <p>Täytä alla olevat tiedot, niin luomme sinulle ammattimaiset verkkosivut. Tämä kestää vain muutaman minuutin.</p>
+        </div>
+
+        <div class="form-container">
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">1</div>
+                <div class="progress-step" data-step="2">2</div>
+                <div class="progress-step" data-step="3">3</div>
+                <div class="progress-step" data-step="4">4</div>
+            </div>
+
+            <form id="kartoitusForm" action="https://formspree.io/f/xvzbgpoz" method="POST">
+                
+                <!-- Section 1: Perustiedot -->
+                <div class="section active" data-section="1">
+                    <h2 class="section-title">Yrityksen perustiedot</h2>
+                    <p class="section-subtitle">Kerro meille kuka olette</p>
+                    
+                    <div class="form-group">
+                        <label>Yrityksen nimi <span class="required">*</span></label>
+                        <input type="text" name="yritysnimi" required placeholder="Esimerkki Oy">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Y-tunnus</label>
+                            <input type="text" name="ytunnus" placeholder="1234567-8">
+                        </div>
+                        <div class="form-group">
+                            <label>Toimiala <span class="required">*</span></label>
+                            <select name="toimiala" required>
+                                <option value="">Valitse...</option>
+                                <option value="kampaamo">Kampaamo / Parturi</option>
+                                <option value="kauneushoitola">Kauneushoitola</option>
+                                <option value="kynsiteknikko">Kynsiteknikko</option>
+                                <option value="hieroja">Hieroja / Fysioterapeutti</option>
+                                <option value="pt">Personal Trainer</option>
+                                <option value="muu">Muu palveluala</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Osoite <span class="required">*</span></label>
+                        <input type="text" name="osoite" required placeholder="Esimerkkitie 1, 00100 Helsinki">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Puhelinnumero <span class="required">*</span></label>
+                            <input type="tel" name="puhelin" required placeholder="040 123 4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Sähköposti <span class="required">*</span></label>
+                            <input type="email" name="email" required placeholder="sahkoposti@yritys.fi">
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <div></div>
+                        <button type="button" class="btn btn-primary" onclick="nextSection()">Seuraava</button>
+                    </div>
+                </div>
+
+                <!-- Section 2: Palvelut -->
+                <div class="section" data-section="2">
+                    <h2 class="section-title">Palvelut ja sisältö</h2>
+                    <p class="section-subtitle">Mitä tarjoatte asiakkaille</p>
+                    
+                    <div class="form-group">
+                        <label>Palvelut <span class="required">*</span></label>
+                        <textarea name="palvelut" required placeholder="Esimerkiksi: Hiustenleikkaukset, värjäykset, permanentit, hiustenhoitotuotteiden myynti..."></textarea>
+                        <p class="hint">Kirjoita mahdollisimman tarkasti, jotta voimme luoda kohderyhmääsi sopivan sisällön.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hintahaitari / Hinnasto</label>
+                        <textarea name="hinnasto" placeholder="Esimerkiksi: Hiustenleikkaus 45€, Värjäys alkaen 80€..."></textarea>
+                        <p class="hint">Voit jättää tyhjäksi, jos et halua julkaista hintoja.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Avoinnaoloajat</label>
+                        <input type="text" name="aukiolo" placeholder="Ma-Pe 9-18, La 10-14">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Erityispiirteet / Vahvuudet</label>
+                        <textarea name="vahvuudet" placeholder="Mikä tekee yrityksestäsi erityisen? Pitkä kokemus, erikoistuminen johonkin, ekologisuus..."></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevSection()">Takaisin</button>
+                        <button type="button" class="btn btn-primary" onclick="nextSection()">Seuraava</button>
+                    </div>
+                </div>
+
+                <!-- Section 3: Ulkoasu -->
+                <div class="section" data-section="3">
+                    <h2 class="section-title">Ulkoasu ja tyyli</h2>
+                    <p class="section-subtitle">Valitse mieleinen ilme</p>
+                    
+                    <div class="form-group">
+                        <label>Värimaailma <span class="required">*</span></label>
+                        <div class="color-options">
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="vihrea" required>
+                                <div class="color-box" style="background: linear-gradient(135deg, #1a5f4a 0%, #2d7a62 100%);"></div>
+                                <div class="color-label">Luotettava vihreä</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="sininen">
+                                <div class="color-box" style="background: linear-gradient(135deg, #1e3a5f 0%, #3d5a80 100%);"></div>
+                                <div class="color-label">Ammattimainen sininen</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="mustavalkoinen">
+                                <div class="color-box" style="background: linear-gradient(135deg, #1a1a1a 0%, #f5f5f5 100%);"></div>
+                                <div class="color-label">Tyylikäs mustavalkoinen</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="lampima">
+                                <div class="color-box" style="background: linear-gradient(135deg, #8b4513 0%, #d4a574 100%);"></div>
+                                <div class="color-label">Lämpimä maanläheinen</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="roosa">
+                                <div class="color-box" style="background: linear-gradient(135deg, #8b4a6b 0%, #d4a5b5 100%);"></div>
+                                <div class="color-label">Pehmeä roosa</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="tumma">
+                                <div class="color-box" style="background: linear-gradient(135deg, #0f1419 0%, #2d3748 100%);"></div>
+                                <div class="color-label">Moderni tumma</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tyyli <span class="required">*</span></label>
+                        <div class="style-grid">
+                            <label class="style-option">
+                                <input type="radio" name="tyyli" value="moderni" required>
+                                <div class="style-card">
+                                    <div class="style-letter">M</div>
+                                    <div class="style-name">Moderni & Minimalistinen</div>
+                                    <div class="style-desc">Siistit linjat, valkoiset tilat</div>
+                                </div>
+                            </label>
+                            <label class="style-option">
+                                <input type="radio" name="tyyli" value="klassinen">
+                                <div class="style-card">
+                                    <div class="style-letter">K</div>
+                                    <div class="style-name">Klassinen & Elegantti</div>
+                                    <div class="style-desc">Ajaton, arvokas ilme</div>
+                                </div>
+                            </label>
+                            <label class="style-option">
+                                <input type="radio" name="tyyli" value="kotoisa">
+                                <div class="style-card">
+                                    <div class="style-letter">O</div>
+                                    <div class="style-name">Kotoisa & Lämminsydäminen</div>
+                                    <div class="style-desc">Pehmeät muodot, lämmin tunnelma</div>
+                                </div>
+                            </label>
+                            <label class="style-option">
+                                <input type="radio" name="tyyli" value="luksus">
+                                <div class="style-card">
+                                    <div class="style-letter">L</div>
+                                    <div class="style-name">Luksus & Premium</div>
+                                    <div class="style-desc">Korkealaatuinen, erottuva</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevSection()">Takaisin</button>
+                        <button type="button" class="btn btn-primary" onclick="nextSection()">Seuraava</button>
+                    </div>
+                </div>
+
+                <!-- Section 4: Lisätiedot -->
+                <div class="section" data-section="4">
+                    <h2 class="section-title">Lisätiedot</h2>
+                    <p class="section-subtitle">Viimeistellään tilaus</p>
+                    
+                    <div class="form-group">
+                        <label>Onko teillä valmiita kuvia?</label>
+                        <select name="kuvat">
+                            <option value="ei">Ei, tarvitsen apua kuvien hankinnassa</option>
+                            <option value="kylla">Kyllä, minulla on omia kuvia</option>
+                            <option value="osittain">Joitain kuvia, tarvitsen lisää</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Instagram</label>
+                            <input type="text" name="instagram" placeholder="@yritys">
+                        </div>
+                        <div class="form-group">
+                            <label>Facebook</label>
+                            <input type="text" name="facebook" placeholder="Yrityksen nimi">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Erityistoiveet</label>
+                        <textarea name="toiveet" placeholder="Ajanvarausjärjestelmä, galleria, blogi, lahjakortit..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Valitse paketti <span class="required">*</span></label>
+                        <select name="paketti" required>
+                            <option value="">Valitse paketti...</option>
+                            <option value="perus">Perus - 150€ + 10€/kk</option>
+                            <option value="yritys">Yritys - 390€ + 15€/kk</option>
+                            <option value="premium">Premium - 590€ + 25€/kk</option>
+                            <option value="ei_tieda">En ole varma, keskustellaan</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevSection()">Takaisin</button>
+                        <button type="submit" class="btn btn-primary">Lähetä tilaus</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">K</div>
+                <h2>Kiitos tilauksesta</h2>
+                <p>Olemme vastaanottaneet tiedot ja otamme sinuun yhteyttä 24 tunnin sisällä.</p>
+                <p>Saat sähköpostiisi luonnoksen tarkistettavaksi ennen kuin aloitamme toteutuksen.</p>
+                
+                <div class="success-note">
+                    <strong>Seuraavat vaiheet:</strong>
+                    <ol style="margin-left: 1.25rem; margin-top: 0.5rem; line-height: 1.8;">
+                        <li>Tarkistamme lähettämäsi tiedot</li>
+                        <li>Luomme alustavan luonnoksen</li>
+                        <li>Lähetämme luonnoksen hyväksyttäväksi</li>
+                        <li>Viimeistelemme sivut julkaisukuntoon</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 1;
+        const totalSections = 4;
+
+        function updateProgress() {
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentSection) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentSection) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        function showSection(n) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${n}"]`).classList.add('active');
+            currentSection = n;
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function nextSection() {
+            const currentForm = document.querySelector(`[data-section="${currentSection}"]`);
+            const requiredFields = currentForm.querySelectorAll('[required]');
+            let valid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    field.style.borderColor = '#dc2626';
+                    valid = false;
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+
+            if (valid && currentSection < totalSections) {
+                showSection(currentSection + 1);
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 1) {
+                showSection(currentSection - 1);
+            }
+        }
+
+        document.getElementById('kartoitusForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('kartoitusForm').style.display = 'none';
+                    document.querySelector('.progress-bar').style.display = 'none';
+                    document.getElementById('successMessage').classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('input', function() {
+                this.style.borderColor = '';
+            });
+        });
+    </script>
+
+</body>
+</html>
