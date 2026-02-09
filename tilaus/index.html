@@ -130,7 +130,6 @@
         input[type="text"],
         input[type="email"],
         input[type="tel"],
-        input[type="file"],
         textarea,
         select {
             width: 100%;
@@ -166,43 +165,178 @@
             gap: 1rem;
         }
 
-        /* Netlify file upload */
-        .file-upload {
+        /* Parempi tiedostojen lataus */
+        .file-upload-area {
             border: 2px dashed var(--border);
-            border-radius: 8px;
-            padding: 2rem;
+            border-radius: 12px;
+            padding: 3rem 2rem;
             text-align: center;
             transition: all 0.3s;
             background: var(--bg);
+            cursor: pointer;
+            position: relative;
         }
 
-        .file-upload:hover {
+        .file-upload-area:hover {
             border-color: var(--primary);
             background: var(--bg-warm);
         }
 
-        .file-upload input[type="file"] {
-            display: none;
+        .file-upload-area.dragover {
+            border-color: var(--primary);
+            background: rgba(26, 95, 74, 0.05);
+            transform: scale(1.02);
         }
 
-        .file-upload-label {
+        .file-upload-area input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
             cursor: pointer;
-            display: block;
         }
 
-        .file-upload-text {
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .upload-text {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-text strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: var(--primary);
+        }
+
+        .upload-text span {
             color: var(--text-light);
             font-size: 0.95rem;
         }
 
-        .file-upload-text strong {
-            color: var(--primary);
-            display: block;
-            margin-bottom: 0.5rem;
+        .upload-limit {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 1rem;
         }
 
-        .netlify-file-input {
-            margin-top: 1rem;
+        /* Kuvien esikatselu */
+        .image-preview-container {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .image-preview-container.has-images {
+            display: block;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .clear-all-btn {
+            background: transparent;
+            color: var(--error);
+            border: 1px solid var(--error);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .clear-all-btn:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .image-preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .image-preview-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 28px;
+            height: 28px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            opacity: 0;
+        }
+
+        .image-preview-item:hover .image-remove-btn {
+            opacity: 1;
+        }
+
+        .image-remove-btn:hover {
+            background: #b91c1c;
+            transform: scale(1.1);
+        }
+
+        .image-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-upload-area.disabled {
+            opacity: 0.5;
+            pointer-events: none;
         }
 
         .color-options {
@@ -329,37 +463,6 @@
 
         .btn-primary:hover { background: var(--primary-dark); }
 
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 4rem 2.5rem;
-        }
-
-        .success-message.active { display: block; }
-
-        .success-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-        }
-
-        .success-message h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.75rem;
-            color: var(--text);
-            margin-bottom: 1rem;
-        }
-
-        .success-message p { color: var(--text-light); margin-bottom: 0.5rem; }
-
         @media (max-width: 640px) {
             body { padding: 1rem; }
             .header { padding: 2rem 1.5rem; }
@@ -380,7 +483,7 @@
             <p>Täytä tiedot ja lisää kuvat. Saat vahvistuksen sähköpostiin.</p>
         </div>
 
-        <div class="form-container" id="formContainer">
+        <div class="form-container">
             <div class="progress-bar">
                 <div class="progress-step active" data-step="1">1</div>
                 <div class="progress-step" data-step="2">2</div>
@@ -388,8 +491,7 @@
                 <div class="progress-step" data-step="4">4</div>
             </div>
 
-            <!-- NETLIFY FORM -->
-            <form id="tilausForm" name="tilaus" method="POST" data-netlify="true" enctype="multipart/form-data" action="/kiitos">
+            <form name="tilaus" method="POST" data-netlify="true" enctype="multipart/form-data" action="/kiitos">
                 <input type="hidden" name="form-name" value="tilaus">
                 
                 <!-- Section 1: Perustiedot -->
@@ -481,17 +583,24 @@
                     
                     <div class="form-group">
                         <label>Lataa kuvat (valinnainen)</label>
-                        <div class="file-upload">
-                            <label class="file-upload-label">
-                                <input type="file" name="kuvat" multiple accept="image/*" class="netlify-file-input">
-                                <div class="file-upload-text">
-                                    <strong>Klikkaa valitaksesi kuvia</strong>
-                                    tai raahaa tiedostot tähän<br>
-                                    <small>Max 10 kuvaa (JPG, PNG, max 10MB)</small>
-                                </div>
-                            </label>
+                        
+                        <div class="file-upload-area" id="dropZone">
+                            <input type="file" name="kuvat" id="fileInput" multiple accept="image/*" onchange="handleFiles(this.files)">
+                            <div class="upload-icon">📁</div>
+                            <div class="upload-text">
+                                <strong>Klikkaa lisätäksesi kuvia</strong>
+                                <span>tai raahaa ne tähän</span>
+                            </div>
+                            <div class="upload-limit">Max 10 kuvaa (JPG, PNG, max 10MB)</div>
                         </div>
-                        <p class="hint">Kuvat tallentuvat automaattisesti lomakkeen mukana.</p>
+                        
+                        <div class="image-preview-container" id="imagePreviewContainer">
+                            <div class="preview-header">
+                                <span>Valitut kuvat (<span id="imageCount">0</span>)</span>
+                                <button type="button" class="clear-all-btn" onclick="clearAllImages()" id="clearAllBtn" style="display: none;">Poista kaikki</button>
+                            </div>
+                            <div class="image-preview-grid" id="imagePreviewGrid"></div>
+                        </div>
                     </div>
 
                     <div class="form-row">
@@ -618,6 +727,118 @@
     <script>
         let currentSection = 1;
         const totalSections = 4;
+        let selectedFiles = [];
+        const MAX_IMAGES = 10;
+
+        // Drag and drop
+        const dropZone = document.getElementById('dropZone');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('dragover');
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+            
+            if (selectedFiles.length + newFiles.length > MAX_IMAGES) {
+                alert(`Voit lisätä enintään ${MAX_IMAGES} kuvaa. Sinulla on jo ${selectedFiles.length} kuvaa.`);
+                return;
+            }
+            
+            selectedFiles = [...selectedFiles, ...newFiles];
+            updateImagePreview();
+            updateFileInput();
+        }
+
+        function updateImagePreview() {
+            const container = document.getElementById('imagePreviewContainer');
+            const grid = document.getElementById('imagePreviewGrid');
+            const countSpan = document.getElementById('imageCount');
+            const clearBtn = document.getElementById('clearAllBtn');
+            const uploadArea = document.getElementById('dropZone');
+            
+            countSpan.textContent = selectedFiles.length;
+            
+            if (selectedFiles.length > 0) {
+                container.classList.add('has-images');
+                clearBtn.style.display = 'block';
+            } else {
+                container.classList.remove('has-images');
+                clearBtn.style.display = 'none';
+            }
+            
+            if (selectedFiles.length >= MAX_IMAGES) {
+                uploadArea.classList.add('disabled');
+            } else {
+                uploadArea.classList.remove('disabled');
+            }
+            
+            grid.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = 'image-preview-item';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}">
+                        <button type="button" class="image-remove-btn" onclick="removeImage(${index})" title="Poista">×</button>
+                        <div class="image-name">${file.name}</div>
+                    `;
+                    grid.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeImage(index) {
+            selectedFiles.splice(index, 1);
+            updateImagePreview();
+            updateFileInput();
+        }
+
+        function clearAllImages() {
+            if (confirm('Poista kaikki kuvat?')) {
+                selectedFiles = [];
+                updateImagePreview();
+                updateFileInput();
+            }
+        }
+
+        function updateFileInput() {
+            const fileInput = document.getElementById('fileInput');
+            const dataTransfer = new DataTransfer();
+            selectedFiles.forEach(file => dataTransfer.items.add(file));
+            fileInput.files = dataTransfer.files;
+        }
 
         function updateProgress() {
             document.querySelectorAll('.progress-step').forEach((step, index) => {
