@@ -3,28 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alkukartoitus | Verkkokumppani</title>
+    <title>Tilaus | Verkkokumppani</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a5f4a;
-            --primary-light: #2d7a62;
             --primary-dark: #0f3d2e;
-            --accent: #c9a227;
             --text: #1a1a1a;
             --text-light: #4a4a4a;
             --bg: #fafafa;
             --bg-warm: #f5f3f0;
             --border: #e0ddd8;
+            --error: #dc2626;
+            --success: #16a34a;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -33,12 +28,6 @@
             background: var(--bg-warm);
             min-height: 100vh;
             padding: 2rem;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            line-height: 1.2;
         }
 
         .container {
@@ -58,21 +47,14 @@
         }
 
         .header h1 {
+            font-family: 'Playfair Display', serif;
             font-size: 2rem;
             margin-bottom: 0.75rem;
-            font-weight: 600;
         }
 
-        .header p {
-            opacity: 0.9;
-            font-weight: 300;
-            max-width: 500px;
-            margin: 0 auto;
-        }
+        .header p { opacity: 0.9; font-weight: 300; }
 
-        .form-container {
-            padding: 2.5rem;
-        }
+        .form-container { padding: 2.5rem; }
 
         .progress-bar {
             display: flex;
@@ -109,25 +91,11 @@
             transition: all 0.3s;
         }
 
-        .progress-step.active {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
+        .progress-step.active { border-color: var(--primary); color: var(--primary); }
+        .progress-step.completed { background: var(--primary); border-color: var(--primary); color: white; }
 
-        .progress-step.completed {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.4s ease; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -135,6 +103,7 @@
         }
 
         .section-title {
+            font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
             color: var(--text);
             margin-bottom: 0.5rem;
@@ -146,9 +115,7 @@
             font-size: 0.95rem;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+        .form-group { margin-bottom: 1.5rem; }
 
         label {
             display: block;
@@ -158,9 +125,7 @@
             font-size: 0.95rem;
         }
 
-        .required {
-            color: var(--primary);
-        }
+        .required { color: var(--primary); }
 
         input[type="text"],
         input[type="email"],
@@ -174,7 +139,6 @@
             font-size: 1rem;
             font-family: inherit;
             transition: all 0.3s;
-            background: white;
         }
 
         input:focus,
@@ -201,6 +165,56 @@
             gap: 1rem;
         }
 
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--bg);
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--bg-warm);
+        }
+
+        .file-upload input { display: none; }
+
+        .file-upload-text {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .file-upload-text strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-list {
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .file-remove {
+            color: var(--error);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
         .color-options {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -208,15 +222,9 @@
             margin-top: 0.5rem;
         }
 
-        .color-option {
-            position: relative;
-            cursor: pointer;
-        }
+        .color-option { position: relative; cursor: pointer; }
 
-        .color-option input {
-            position: absolute;
-            opacity: 0;
-        }
+        .color-option input { position: absolute; opacity: 0; }
 
         .color-box {
             height: 70px;
@@ -260,15 +268,9 @@
             margin-top: 0.5rem;
         }
 
-        .style-option {
-            position: relative;
-            cursor: pointer;
-        }
+        .style-option { position: relative; cursor: pointer; }
 
-        .style-option input {
-            position: absolute;
-            opacity: 0;
-        }
+        .style-option input { position: absolute; opacity: 0; }
 
         .style-card {
             border: 2px solid var(--border);
@@ -299,17 +301,9 @@
             font-weight: 600;
         }
 
-        .style-name {
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.25rem;
-            font-size: 0.95rem;
-        }
+        .style-name { font-weight: 600; color: var(--text); margin-bottom: 0.25rem; font-size: 0.95rem; }
 
-        .style-desc {
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
+        .style-desc { font-size: 0.8rem; color: var(--text-light); }
 
         .button-group {
             display: flex;
@@ -336,18 +330,14 @@
             border: 1px solid var(--border);
         }
 
-        .btn-secondary:hover {
-            background: var(--bg);
-        }
+        .btn-secondary:hover { background: var(--bg); }
 
         .btn-primary {
             background: var(--primary);
             color: white;
         }
 
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
+        .btn-primary:hover { background: var(--primary-dark); }
 
         .success-message {
             display: none;
@@ -355,9 +345,7 @@
             padding: 4rem 2.5rem;
         }
 
-        .success-message.active {
-            display: block;
-        }
+        .success-message.active { display: block; }
 
         .success-icon {
             width: 80px;
@@ -374,63 +362,35 @@
         }
 
         .success-message h2 {
+            font-family: 'Playfair Display', serif;
             font-size: 1.75rem;
             color: var(--text);
             margin-bottom: 1rem;
         }
 
-        .success-message p {
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
+        .success-message p { color: var(--text-light); margin-bottom: 0.5rem; }
 
-        .success-note {
+        .success-code {
             background: var(--bg-warm);
             padding: 1.5rem;
             border-radius: 4px;
             margin-top: 2rem;
             text-align: left;
-        }
-
-        .success-note strong {
-            color: var(--primary);
-            display: block;
-            margin-bottom: 0.5rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            border: 1px solid var(--border);
         }
 
         @media (max-width: 640px) {
-            body {
-                padding: 1rem;
-            }
-
-            .header {
-                padding: 2rem 1.5rem;
-            }
-
-            .form-container {
-                padding: 1.5rem;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .color-options {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .style-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .button-group {
-                flex-direction: column-reverse;
-                gap: 1rem;
-            }
-
-            .btn {
-                width: 100%;
-            }
+            body { padding: 1rem; }
+            .header { padding: 2rem 1.5rem; }
+            .form-container { padding: 1.5rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .color-options { grid-template-columns: repeat(2, 1fr); }
+            .style-grid { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column-reverse; gap: 1rem; }
+            .btn { width: 100%; }
         }
     </style>
 </head>
@@ -438,11 +398,11 @@
 
     <div class="container">
         <div class="header">
-            <h1>Verkkosivujen alkukartoitus</h1>
-            <p>Täytä alla olevat tiedot, niin luomme sinulle ammattimaiset verkkosivut. Tämä kestää vain muutaman minuutin.</p>
+            <h1>Verkkosivujen tilaus</h1>
+            <p>Täytä tiedot ja lähetä kuvat. Saat vahvistuksen sähköpostiin.</p>
         </div>
 
-        <div class="form-container">
+        <div class="form-container" id="formContainer">
             <div class="progress-bar">
                 <div class="progress-step active" data-step="1">1</div>
                 <div class="progress-step" data-step="2">2</div>
@@ -450,12 +410,12 @@
                 <div class="progress-step" data-step="4">4</div>
             </div>
 
-            <form id="kartoitusForm" action="https://formspree.io/f/xvzbgpoz" method="POST">
+            <form id="tilausForm">
                 
                 <!-- Section 1: Perustiedot -->
                 <div class="section active" data-section="1">
-                    <h2 class="section-title">Yrityksen perustiedot</h2>
-                    <p class="section-subtitle">Kerro meille kuka olette</p>
+                    <h2 class="section-title">Yrityksen tiedot</h2>
+                    <p class="section-subtitle">Perustiedot yrityksestäsi</p>
                     
                     <div class="form-group">
                         <label>Yrityksen nimi <span class="required">*</span></label>
@@ -483,7 +443,7 @@
 
                     <div class="form-group">
                         <label>Osoite <span class="required">*</span></label>
-                        <input type="text" name="osoite" required placeholder="Esimerkkitie 1, 00100 Helsinki">
+                        <input type="text" name="osoite" required placeholder="Katuosoite, postinumero Kaupunki">
                     </div>
 
                     <div class="form-row">
@@ -506,28 +466,26 @@
                 <!-- Section 2: Palvelut -->
                 <div class="section" data-section="2">
                     <h2 class="section-title">Palvelut ja sisältö</h2>
-                    <p class="section-subtitle">Mitä tarjoatte asiakkaille</p>
+                    <p class="section-subtitle">Kerro mitä tarjoat</p>
                     
                     <div class="form-group">
                         <label>Palvelut <span class="required">*</span></label>
-                        <textarea name="palvelut" required placeholder="Esimerkiksi: Hiustenleikkaukset, värjäykset, permanentit, hiustenhoitotuotteiden myynti..."></textarea>
-                        <p class="hint">Kirjoita mahdollisimman tarkasti, jotta voimme luoda kohderyhmääsi sopivan sisällön.</p>
+                        <textarea name="palvelut" required placeholder="Kuvaile palveluitasi..."></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Hintahaitari / Hinnasto</label>
-                        <textarea name="hinnasto" placeholder="Esimerkiksi: Hiustenleikkaus 45€, Värjäys alkaen 80€..."></textarea>
-                        <p class="hint">Voit jättää tyhjäksi, jos et halua julkaista hintoja.</p>
+                        <label>Hinnasto</label>
+                        <textarea name="hinnasto" placeholder="Palvelut ja hinnat..."></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Avoinnaoloajat</label>
-                        <input type="text" name="aukiolo" placeholder="Ma-Pe 9-18, La 10-14">
+                        <input type="text" name="aukiolo" placeholder="Ma-pe 9-17">
                     </div>
 
                     <div class="form-group">
-                        <label>Erityispiirteet / Vahvuudet</label>
-                        <textarea name="vahvuudet" placeholder="Mikä tekee yrityksestäsi erityisen? Pitkä kokemus, erikoistuminen johonkin, ekologisuus..."></textarea>
+                        <label>Vahvuudet / Erityispiirteet</label>
+                        <textarea name="vahvuudet" placeholder="Mikä tekee teistä erityisen?"></textarea>
                     </div>
 
                     <div class="button-group">
@@ -536,103 +494,23 @@
                     </div>
                 </div>
 
-                <!-- Section 3: Ulkoasu -->
+                <!-- Section 3: Kuvat -->
                 <div class="section" data-section="3">
-                    <h2 class="section-title">Ulkoasu ja tyyli</h2>
-                    <p class="section-subtitle">Valitse mieleinen ilme</p>
+                    <h2 class="section-title">Kuvat</h2>
+                    <p class="section-subtitle">Lisää kuvia sivuillesi (valinnainen)</p>
                     
                     <div class="form-group">
-                        <label>Värimaailma <span class="required">*</span></label>
-                        <div class="color-options">
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="vihrea" required>
-                                <div class="color-box" style="background: linear-gradient(135deg, #1a5f4a 0%, #2d7a62 100%);"></div>
-                                <div class="color-label">Luotettava vihreä</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="sininen">
-                                <div class="color-box" style="background: linear-gradient(135deg, #1e3a5f 0%, #3d5a80 100%);"></div>
-                                <div class="color-label">Ammattimainen sininen</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="mustavalkoinen">
-                                <div class="color-box" style="background: linear-gradient(135deg, #1a1a1a 0%, #f5f5f5 100%);"></div>
-                                <div class="color-label">Tyylikäs mustavalkoinen</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="lampima">
-                                <div class="color-box" style="background: linear-gradient(135deg, #8b4513 0%, #d4a574 100%);"></div>
-                                <div class="color-label">Lämpimä maanläheinen</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="roosa">
-                                <div class="color-box" style="background: linear-gradient(135deg, #8b4a6b 0%, #d4a5b5 100%);"></div>
-                                <div class="color-label">Pehmeä roosa</div>
-                            </label>
-                            <label class="color-option">
-                                <input type="radio" name="varimaailma" value="tumma">
-                                <div class="color-box" style="background: linear-gradient(135deg, #0f1419 0%, #2d3748 100%);"></div>
-                                <div class="color-label">Moderni tumma</div>
-                            </label>
+                        <label>Lataa kuvat</label>
+                        <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                            <input type="file" id="fileInput" multiple accept="image/*" onchange="handleFiles(this.files)">
+                            <div class="file-upload-text">
+                                <strong>Klikkaa lisätäksesi kuvia</strong>
+                                tai raahaa tiedostot tähän<br>
+                                <small>Max 10 kuvaa (JPG, PNG)</small>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tyyli <span class="required">*</span></label>
-                        <div class="style-grid">
-                            <label class="style-option">
-                                <input type="radio" name="tyyli" value="moderni" required>
-                                <div class="style-card">
-                                    <div class="style-letter">M</div>
-                                    <div class="style-name">Moderni & Minimalistinen</div>
-                                    <div class="style-desc">Siistit linjat, valkoiset tilat</div>
-                                </div>
-                            </label>
-                            <label class="style-option">
-                                <input type="radio" name="tyyli" value="klassinen">
-                                <div class="style-card">
-                                    <div class="style-letter">K</div>
-                                    <div class="style-name">Klassinen & Elegantti</div>
-                                    <div class="style-desc">Ajaton, arvokas ilme</div>
-                                </div>
-                            </label>
-                            <label class="style-option">
-                                <input type="radio" name="tyyli" value="kotoisa">
-                                <div class="style-card">
-                                    <div class="style-letter">O</div>
-                                    <div class="style-name">Kotoisa & Lämminsydäminen</div>
-                                    <div class="style-desc">Pehmeät muodot, lämmin tunnelma</div>
-                                </div>
-                            </label>
-                            <label class="style-option">
-                                <input type="radio" name="tyyli" value="luksus">
-                                <div class="style-card">
-                                    <div class="style-letter">L</div>
-                                    <div class="style-name">Luksus & Premium</div>
-                                    <div class="style-desc">Korkealaatuinen, erottuva</div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="button" class="btn btn-secondary" onclick="prevSection()">Takaisin</button>
-                        <button type="button" class="btn btn-primary" onclick="nextSection()">Seuraava</button>
-                    </div>
-                </div>
-
-                <!-- Section 4: Lisätiedot -->
-                <div class="section" data-section="4">
-                    <h2 class="section-title">Lisätiedot</h2>
-                    <p class="section-subtitle">Viimeistellään tilaus</p>
-                    
-                    <div class="form-group">
-                        <label>Onko teillä valmiita kuvia?</label>
-                        <select name="kuvat">
-                            <option value="ei">Ei, tarvitsen apua kuvien hankinnassa</option>
-                            <option value="kylla">Kyllä, minulla on omia kuvia</option>
-                            <option value="osittain">Joitain kuvia, tarvitsen lisää</option>
-                        </select>
+                        <div class="file-list" id="fileList"></div>
+                        <p class="hint">Kuvat tallentuvat tilauksen yhteydessä. Voit myös lähettää kuvat myöhemmin sähköpostilla.</p>
                     </div>
 
                     <div class="form-row">
@@ -646,20 +524,105 @@
                         </div>
                     </div>
 
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevSection()">Takaisin</button>
+                        <button type="button" class="btn btn-primary" onclick="nextSection()">Seuraava</button>
+                    </div>
+                </div>
+
+                <!-- Section 4: Ulkoasu -->
+                <div class="section" data-section="4">
+                    <h2 class="section-title">Ulkoasu</h2>
+                    <p class="section-subtitle">Valitse tyyli</p>
+                    
                     <div class="form-group">
-                        <label>Erityistoiveet</label>
-                        <textarea name="toiveet" placeholder="Ajanvarausjärjestelmä, galleria, blogi, lahjakortit..."></textarea>
+                        <label>Värimaailma <span class="required">*</span></label>
+                        <div class="color-options">
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="vihrea" required>
+                                <div class="color-box" style="background: linear-gradient(135deg, #1a5f4a 0%, #2d7a62 100%);"></div>
+                                <div class="color-label">Vihreä</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="sininen">
+                                <div class="color-box" style="background: linear-gradient(135deg, #1e3a5f 0%, #3d5a80 100%);"></div>
+                                <div class="color-label">Sininen</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="mustavalkoinen">
+                                <div class="color-box" style="background: linear-gradient(135deg, #1a1a1a 0%, #f5f5f5 100%);"></div>
+                                <div class="color-label">Mustavalkoinen</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="lampima">
+                                <div class="color-box" style="background: linear-gradient(135deg, #8b4513 0%, #d4a574 100%);"></div>
+                                <div class="color-label">Maanläheinen</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="roosa">
+                                <div class="color-box" style="background: linear-gradient(135deg, #8b4a6b 0%, #d4a5b5 100%);"></div>
+                                <div class="color-label">Roosa</div>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="varimaailma" value="tumma">
+                                <div class="color-box" style="background: linear-gradient(135deg, #0f1419 0%, #2d3748 100%);"></div>
+                                <div class="color-label">Tumma</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tyyli <span class="required">*</span></label>
+                        <div class="style-grid">
+                            <label class="style-option">
+                                <input type="radio" name="tyyli" value="moderni" required>
+                                <div class="style-card">
+                                    <div class="style-letter">M</div>
+                                    <div class="style-name">Moderni</div>
+                                    <div class="style-desc">Siistit linjat</div>
+                                </div>
+                            </label>
+                            <label class="style-option">
+                                <input type="radio" name="tyyli" value="klassinen">
+                                <div class="style-card">
+                                    <div class="style-letter">K</div>
+                                    <div class="style-name">Klassinen</div>
+                                    <div class="style-desc">Ajaton elegance</div>
+                                </div>
+                            </label>
+                            <label class="style-option">
+                                <input type="radio" name="tyyli" value="kotoisa">
+                                <div class="style-card">
+                                    <div class="style-letter">O</div>
+                                    <div class="style-name">Kotoisa</div>
+                                    <div class="style-desc">Lämminsydäminen</div>
+                                </div>
+                            </label>
+                            <label class="style-option">
+                                <input type="radio" name="tyyli" value="luksus">
+                                <div class="style-card">
+                                    <div class="style-letter">L</div>
+                                    <div class="style-name">Luksus</div>
+                                    <div class="style-desc">Premium-tunnelma</div>
+                                </div>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label>Valitse paketti <span class="required">*</span></label>
                         <select name="paketti" required>
-                            <option value="">Valitse paketti...</option>
+                            <option value="">Valitse...</option>
                             <option value="perus">Perus - 150€ + 10€/kk</option>
                             <option value="yritys">Yritys - 390€ + 15€/kk</option>
                             <option value="premium">Premium - 590€ + 25€/kk</option>
-                            <option value="ei_tieda">En ole varma, keskustellaan</option>
+                            <option value="ei_tieda">En ole varma</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lisätoiveet</label>
+                        <textarea name="toiveet" placeholder="Ajanvaraus, galleria, blogi..."></textarea>
                     </div>
 
                     <div class="button-group">
@@ -672,19 +635,16 @@
             <!-- Success Message -->
             <div class="success-message" id="successMessage">
                 <div class="success-icon">K</div>
-                <h2>Kiitos tilauksesta</h2>
-                <p>Olemme vastaanottaneet tiedot ja otamme sinuun yhteyttä 24 tunnin sisällä.</p>
-                <p>Saat sähköpostiisi luonnoksen tarkistettavaksi ennen kuin aloitamme toteutuksen.</p>
+                <h2>Kiitos tilauksesta!</h2>
+                <p>Olemme vastaanottaneet tiedot.</p>
+                <p>Tallenna alla oleva koodi ja lähetä se meille sähköpostilla tai WhatsAppilla:</p>
                 
-                <div class="success-note">
-                    <strong>Seuraavat vaiheet:</strong>
-                    <ol style="margin-left: 1.25rem; margin-top: 0.5rem; line-height: 1.8;">
-                        <li>Tarkistamme lähettämäsi tiedot</li>
-                        <li>Luomme alustavan luonnoksen</li>
-                        <li>Lähetämme luonnoksen hyväksyttäväksi</li>
-                        <li>Viimeistelemme sivut julkaisukuntoon</li>
-                    </ol>
-                </div>
+                <div class="success-code" id="orderCode"></div>
+                
+                <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-light);">
+                    Kuvat: Jos lisäsit kuvia, lähetä ne erikseen sähköpostilla:<br>
+                    <strong>info@verkkokumppani.fi</strong>
+                </p>
             </div>
         </div>
     </div>
@@ -692,6 +652,7 @@
     <script>
         let currentSection = 1;
         const totalSections = 4;
+        let uploadedFiles = [];
 
         function updateProgress() {
             document.querySelectorAll('.progress-step').forEach((step, index) => {
@@ -739,23 +700,62 @@
             }
         }
 
-        document.getElementById('kartoitusForm').addEventListener('submit', function(e) {
+        function handleFiles(files) {
+            const fileList = document.getElementById('fileList');
+            
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    uploadedFiles.push(file);
+                    const item = document.createElement('div');
+                    item.className = 'file-item';
+                    item.innerHTML = `
+                        <span>${file.name}</span>
+                        <span class="file-remove" onclick="removeFile(this, '${file.name}')">×</span>
+                    `;
+                    fileList.appendChild(item);
+                }
+            });
+        }
+
+        function removeFile(element, filename) {
+            uploadedFiles = uploadedFiles.filter(f => f.name !== filename);
+            element.parentElement.remove();
+        }
+
+        document.getElementById('tilausForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
             
-            fetch(this.action, {
+            // Generate order code
+            const orderId = 'VK' + Date.now().toString(36).toUpperCase();
+            const orderData = {
+                id: orderId,
+                date: new Date().toISOString(),
+                ...data,
+                files: uploadedFiles.map(f => f.name)
+            };
+            
+            // Save to localStorage for admin view
+            const orders = JSON.parse(localStorage.getItem('verkkokumppani_orders') || '[]');
+            orders.push(orderData);
+            localStorage.setItem('verkkokumppani_orders', JSON.stringify(orders));
+            
+            // Show success with code
+            document.getElementById('formContainer').style.display = 'none';
+            document.getElementById('successMessage').classList.add('active');
+            document.getElementById('orderCode').textContent = btoa(JSON.stringify(orderData));
+            
+            // Also send email via Formspree
+            fetch('https://formspree.io/f/xvzbgpoz', {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    document.getElementById('kartoitusForm').style.display = 'none';
-                    document.querySelector('.progress-bar').style.display = 'none';
-                    document.getElementById('successMessage').classList.add('active');
-                }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tilausnumero: orderId,
+                    ...data,
+                    kuvat: uploadedFiles.map(f => f.name).join(', ')
+                })
             });
         });
 
