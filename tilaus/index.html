@@ -130,6 +130,7 @@
         input[type="text"],
         input[type="email"],
         input[type="tel"],
+        input[type="file"],
         textarea,
         select {
             width: 100%;
@@ -165,12 +166,12 @@
             gap: 1rem;
         }
 
+        /* Netlify file upload */
         .file-upload {
             border: 2px dashed var(--border);
             border-radius: 8px;
             padding: 2rem;
             text-align: center;
-            cursor: pointer;
             transition: all 0.3s;
             background: var(--bg);
         }
@@ -180,7 +181,14 @@
             background: var(--bg-warm);
         }
 
-        .file-upload input { display: none; }
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            cursor: pointer;
+            display: block;
+        }
 
         .file-upload-text {
             color: var(--text-light);
@@ -193,26 +201,8 @@
             margin-bottom: 0.5rem;
         }
 
-        .file-list {
+        .netlify-file-input {
             margin-top: 1rem;
-            text-align: left;
-        }
-
-        .file-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem;
-            background: white;
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .file-remove {
-            color: var(--error);
-            cursor: pointer;
-            font-weight: 600;
         }
 
         .color-options {
@@ -370,18 +360,6 @@
 
         .success-message p { color: var(--text-light); margin-bottom: 0.5rem; }
 
-        .success-code {
-            background: var(--bg-warm);
-            padding: 1.5rem;
-            border-radius: 4px;
-            margin-top: 2rem;
-            text-align: left;
-            font-family: monospace;
-            font-size: 0.85rem;
-            word-break: break-all;
-            border: 1px solid var(--border);
-        }
-
         @media (max-width: 640px) {
             body { padding: 1rem; }
             .header { padding: 2rem 1.5rem; }
@@ -399,7 +377,7 @@
     <div class="container">
         <div class="header">
             <h1>Verkkosivujen tilaus</h1>
-            <p>Täytä tiedot ja lähetä kuvat. Saat vahvistuksen sähköpostiin.</p>
+            <p>Täytä tiedot ja lisää kuvat. Saat vahvistuksen sähköpostiin.</p>
         </div>
 
         <div class="form-container" id="formContainer">
@@ -410,7 +388,9 @@
                 <div class="progress-step" data-step="4">4</div>
             </div>
 
-            <form id="tilausForm">
+            <!-- NETLIFY FORM -->
+            <form id="tilausForm" name="tilaus" method="POST" data-netlify="true" enctype="multipart/form-data" action="/kiitos">
+                <input type="hidden" name="form-name" value="tilaus">
                 
                 <!-- Section 1: Perustiedot -->
                 <div class="section active" data-section="1">
@@ -497,20 +477,21 @@
                 <!-- Section 3: Kuvat -->
                 <div class="section" data-section="3">
                     <h2 class="section-title">Kuvat</h2>
-                    <p class="section-subtitle">Lisää kuvia sivuillesi (valinnainen)</p>
+                    <p class="section-subtitle">Lisää kuvia sivuillesi</p>
                     
                     <div class="form-group">
-                        <label>Lataa kuvat</label>
-                        <div class="file-upload" onclick="document.getElementById('fileInput').click()">
-                            <input type="file" id="fileInput" multiple accept="image/*" onchange="handleFiles(this.files)">
-                            <div class="file-upload-text">
-                                <strong>Klikkaa lisätäksesi kuvia</strong>
-                                tai raahaa tiedostot tähän<br>
-                                <small>Max 10 kuvaa (JPG, PNG)</small>
-                            </div>
+                        <label>Lataa kuvat (valinnainen)</label>
+                        <div class="file-upload">
+                            <label class="file-upload-label">
+                                <input type="file" name="kuvat" multiple accept="image/*" class="netlify-file-input">
+                                <div class="file-upload-text">
+                                    <strong>Klikkaa valitaksesi kuvia</strong>
+                                    tai raahaa tiedostot tähän<br>
+                                    <small>Max 10 kuvaa (JPG, PNG, max 10MB)</small>
+                                </div>
+                            </label>
                         </div>
-                        <div class="file-list" id="fileList"></div>
-                        <p class="hint">Kuvat tallentuvat tilauksen yhteydessä. Voit myös lähettää kuvat myöhemmin sähköpostilla.</p>
+                        <p class="hint">Kuvat tallentuvat automaattisesti lomakkeen mukana.</p>
                     </div>
 
                     <div class="form-row">
@@ -631,28 +612,12 @@
                     </div>
                 </div>
             </form>
-
-            <!-- Success Message -->
-            <div class="success-message" id="successMessage">
-                <div class="success-icon">K</div>
-                <h2>Kiitos tilauksesta!</h2>
-                <p>Olemme vastaanottaneet tiedot.</p>
-                <p>Tallenna alla oleva koodi ja lähetä se meille sähköpostilla tai WhatsAppilla:</p>
-                
-                <div class="success-code" id="orderCode"></div>
-                
-                <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-light);">
-                    Kuvat: Jos lisäsit kuvia, lähetä ne erikseen sähköpostilla:<br>
-                    <strong>info@verkkokumppani.fi</strong>
-                </p>
-            </div>
         </div>
     </div>
 
     <script>
         let currentSection = 1;
         const totalSections = 4;
-        let uploadedFiles = [];
 
         function updateProgress() {
             document.querySelectorAll('.progress-step').forEach((step, index) => {
@@ -699,65 +664,6 @@
                 showSection(currentSection - 1);
             }
         }
-
-        function handleFiles(files) {
-            const fileList = document.getElementById('fileList');
-            
-            Array.from(files).forEach(file => {
-                if (file.type.startsWith('image/')) {
-                    uploadedFiles.push(file);
-                    const item = document.createElement('div');
-                    item.className = 'file-item';
-                    item.innerHTML = `
-                        <span>${file.name}</span>
-                        <span class="file-remove" onclick="removeFile(this, '${file.name}')">×</span>
-                    `;
-                    fileList.appendChild(item);
-                }
-            });
-        }
-
-        function removeFile(element, filename) {
-            uploadedFiles = uploadedFiles.filter(f => f.name !== filename);
-            element.parentElement.remove();
-        }
-
-        document.getElementById('tilausForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Generate order code
-            const orderId = 'VK' + Date.now().toString(36).toUpperCase();
-            const orderData = {
-                id: orderId,
-                date: new Date().toISOString(),
-                ...data,
-                files: uploadedFiles.map(f => f.name)
-            };
-            
-            // Save to localStorage for admin view
-            const orders = JSON.parse(localStorage.getItem('verkkokumppani_orders') || '[]');
-            orders.push(orderData);
-            localStorage.setItem('verkkokumppani_orders', JSON.stringify(orders));
-            
-            // Show success with code
-            document.getElementById('formContainer').style.display = 'none';
-            document.getElementById('successMessage').classList.add('active');
-            document.getElementById('orderCode').textContent = btoa(JSON.stringify(orderData));
-            
-            // Also send email via Formspree
-            fetch('https://formspree.io/f/xvzbgpoz', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    tilausnumero: orderId,
-                    ...data,
-                    kuvat: uploadedFiles.map(f => f.name).join(', ')
-                })
-            });
-        });
 
         document.querySelectorAll('input, textarea, select').forEach(field => {
             field.addEventListener('input', function() {
