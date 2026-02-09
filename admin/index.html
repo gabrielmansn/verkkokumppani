@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Verkkokumppani</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5f4a;
+            --primary-dark: #0f3d2e;
+            --text: #1a1a1a;
+            --text-light: #4a4a4a;
+            --bg: #f5f5f5;
+            --border: #e0ddd8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+            min-height: 100vh;
+        }
+
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--primary);
+        }
+
+        .login-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-box p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .login-box button:hover { background: var(--primary-dark); }
+
+        .error {
+            color: #dc2626;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .admin-panel { display: none; }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+        }
+
+        header button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .order-list {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .order-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .order-item:hover { background: #f9f9f9; }
+
+        .order-item:last-child { border-bottom: none; }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .order-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .order-company {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .order-package {
+            display: inline-block;
+            background: var(--bg);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .order-detail {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .order-detail.active { display: block; }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-item p {
+            font-size: 0.95rem;
+        }
+
+        .detail-full {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-full h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-full p {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: 1fr; }
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>Verkkokumppani</h1>
+            <p>Admin-paneeli</p>
+            <input type="password" id="passwordInput" placeholder="Salasana" onkeypress="if(event.key==='Enter')login()">
+            <button onclick="login()">Kirjaudu</button>
+            <p class="error" id="errorMsg">Väärä salasana</p>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <header>
+            <div class="header-content">
+                <h1>Tilaukset</h1>
+                <button onclick="logout()">Kirjaudu ulos</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Uudet tilaukset</h3>
+                    <div class="number" id="newCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Kaikki tilaukset</h3>
+                    <div class="number" id="totalCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Tämä kuukausi</h3>
+                    <div class="number" id="monthCount">0</div>
+                </div>
+            </div>
+
+            <div class="order-list" id="orderList">
+                <!-- Orders loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Aseta salasana tässä (vaihda omaan!)
+        const ADMIN_PASSWORD = 'verkkokumppani2024';
+
+        function login() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === ADMIN_PASSWORD) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadOrders();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('verkkokumppani_orders') || '[]');
+            const orderList = document.getElementById('orderList');
+            
+            // Update stats
+            document.getElementById('totalCount').textContent = orders.length;
+            document.getElementById('newCount').textContent = orders.filter(o => {
+                const orderDate = new Date(o.date);
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                return orderDate > weekAgo;
+            }).length;
+            
+            const thisMonth = new Date().getMonth();
+            document.getElementById('monthCount').textContent = orders.filter(o => 
+                new Date(o.date).getMonth() === thisMonth
+            ).length;
+
+            if (orders.length === 0) {
+                orderList.innerHTML = '<div class="empty-state">Ei tilauksia vielä</div>';
+                return;
+            }
+
+            // Sort by date (newest first)
+            orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            orderList.innerHTML = orders.map((order, index) => `
+                <div class="order-item" onclick="toggleDetail(${index})">
+                    <div class="order-header">
+                        <span class="order-id">${order.id}</span>
+                        <span class="order-date">${formatDate(order.date)}</span>
+                    </div>
+                    <div class="order-company">${order.yritysnimi}</div>
+                    <span class="order-package">${getPackageName(order.paketti)}</span>
+                    
+                    <div class="order-detail" id="detail-${index}">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <h4>Y-tunnus</h4>
+                                <p>${order.ytunnus || '-'}</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Toimiala</h4>
+                                <p>${order.toimiala}</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Puhelin</h4>
+                                <p><a href="tel:${order.puhelin}">${order.puhelin}</a></p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Sähköposti</h4>
+                                <p><a href="mailto:${order.email}">${order.email}</a></p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Värimaailma</h4>
+                                <p>${order.varimaailma}</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Tyyli</h4>
+                                <p>${order.tyyli}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-full">
+                            <h4>Osoite</h4>
+                            <p>${order.osoite}</p>
+                        </div>
+                        
+                        <div class="detail-full">
+                            <h4>Palvelut</h4>
+                            <p>${order.palvelut}</p>
+                        </div>
+                        
+                        ${order.hinnasto ? `
+                        <div class="detail-full">
+                            <h4>Hinnasto</h4>
+                            <p>${order.hinnasto}</p>
+                        </div>
+                        ` : ''}
+                        
+                        ${order.vahvuudet ? `
+                        <div class="detail-full">
+                            <h4>Vahvuudet</h4>
+                            <p>${order.vahvuudet}</p>
+                        </div>
+                        ` : ''}
+                        
+                        ${order.aukiolo ? `
+                        <div class="detail-full">
+                            <h4>Aukioloajat</h4>
+                            <p>${order.aukiolo}</p>
+                        </div>
+                        ` : ''}
+                        
+                        ${order.toiveet ? `
+                        <div class="detail-full">
+                            <h4>Toiveet</h4>
+                            <p>${order.toiveet}</p>
+                        </div>
+                        ` : ''}
+                        
+                        ${order.files && order.files.length > 0 ? `
+                        <div class="detail-full">
+                            <h4>Kuvat (${order.files.length} kpl)</h4>
+                            <p>${order.files.join(', ')}</p>
+                            <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-light);">
+                                Huom: Kuvat on lähetetty erikseen sähköpostilla
+                            </p>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="copyToClipboard('${order.id}'); event.stopPropagation();">
+                                Kopioi tilausnumero
+                            </button>
+                            <button class="btn btn-secondary" onclick="deleteOrder('${order.id}'); event.stopPropagation();">
+                                Poista tilaus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleDetail(index) {
+            const detail = document.getElementById(`detail-${index}`);
+            detail.classList.toggle('active');
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fi-FI', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function getPackageName(pkg) {
+            const packages = {
+                'perus': 'Perus (150€)',
+                'yritys': 'Yritys (390€)',
+                'premium': 'Premium (590€)',
+                'ei_tieda': 'Ei tiedossa'
+            };
+            return packages[pkg] || pkg;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert('Tilausnumero kopioitu: ' + text);
+        }
+
+        function deleteOrder(id) {
+            if (confirm('Poista tilaus ' + id + '?')) {
+                let orders = JSON.parse(localStorage.getItem('verkkokumppani_orders') || '[]');
+                orders = orders.filter(o => o.id !== id);
+                localStorage.setItem('verkkokumppani_orders', JSON.stringify(orders));
+                loadOrders();
+            }
+        }
+    </script>
+
+</body>
+</html>
