@@ -64,6 +64,7 @@
             font-weight: 700;
             color: var(--primary);
             letter-spacing: -0.5px;
+            text-decoration: none;
         }
 
         .nav-links {
@@ -318,6 +319,519 @@
             font-weight: 300;
         }
 
+        /* Animaatio-tyylit */
+        .process-animation {
+            background: var(--bg-warm);
+            padding: 4rem 0;
+        }
+
+        .animation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .animation-stage {
+            position: relative;
+            height: 320px;
+            background: linear-gradient(135deg, #faf9f7 0%, #f0eeeb 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .steps-container {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            z-index: 10;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.3;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-item.active {
+            opacity: 1;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e0ded9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #999;
+            font-size: 0.85rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .step-item.active .step-circle {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(26, 95, 74, 0.3);
+        }
+
+        .step-line {
+            position: absolute;
+            top: 50%;
+            left: 45px;
+            width: 60px;
+            height: 2px;
+            background: #e0ded9;
+            transform: translateY(-50%);
+            transition: all 0.4s ease;
+        }
+
+        .step-item.active .step-line {
+            background: var(--primary);
+        }
+
+        .step-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .step-item.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .content-wrapper {
+            position: absolute;
+            top: 85px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scene-content {
+            position: absolute;
+            width: 100%;
+            max-width: 500px;
+            padding: 0 1.5rem;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+
+        .scene-content.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .scene-content.exit {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+        }
+
+        .form-visual {
+            background: white;
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            flex: 1;
+            height: 30px;
+            background: #f5f3f0;
+            border-radius: 4px;
+            border: 1px solid #e0ded9;
+        }
+
+        .form-styles {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .style-pill {
+            padding: 6px 12px;
+            background: white;
+            border: 2px solid #e0ded9;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            color: #666;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        .scene-content.active .style-pill {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .scene-content.active .style-pill:nth-child(1) { transition-delay: 0.1s; }
+        .scene-content.active .style-pill:nth-child(2) { transition-delay: 0.2s; background: var(--primary); color: white; border-color: var(--primary); }
+        .scene-content.active .style-pill:nth-child(3) { transition-delay: 0.3s; }
+
+        .submit-line {
+            height: 34px;
+            background: var(--primary);
+            border-radius: 4px;
+            margin-top: 12px;
+            transform: scaleX(0.9);
+            opacity: 0;
+            transition: all 0.3s ease 0.25s;
+        }
+
+        .scene-content.active .submit-line {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+
+        .creation-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .conversation-bubbles {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 340px;
+        }
+
+        .bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            max-width: 85%;
+            transform: translateX(-15px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .scene-content.active .bubble {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .bubble.client {
+            background: white;
+            color: #4a4a4a;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .scene-content.active .bubble.client { transition-delay: 0.15s; }
+
+        .bubble.expert {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+            box-shadow: 0 3px 12px rgba(26, 95, 74, 0.2);
+        }
+
+        .scene-content.active .bubble.expert { transition-delay: 0.35s; }
+
+        .creation-status {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: #666;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.3s ease;
+        }
+
+        .scene-content.active .status-indicator {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scene-content.active .status-indicator:nth-child(1) { transition-delay: 0.5s; }
+        .scene-content.active .status-indicator:nth-child(2) { transition-delay: 0.65s; }
+        .scene-content.active .status-indicator:nth-child(3) { transition-delay: 0.8s; }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #e0ded9;
+        }
+
+        .status-dot.active {
+            background: var(--primary);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        .refinement-visual {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .refinement-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .refine-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            font-size: 0.8rem;
+            color: #4a4a4a;
+            transform: translateX(-15px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .scene-content.active .refine-item {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .scene-content.active .refine-item:nth-child(1) { transition-delay: 0.15s; }
+        .scene-content.active .refine-item:nth-child(2) { transition-delay: 0.3s; }
+        .scene-content.active .refine-item:nth-child(3) { transition-delay: 0.45s; }
+
+        .refine-icon {
+            width: 20px;
+            height: 20px;
+            background: #f0f7f5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .quality-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            min-width: 150px;
+        }
+
+        .quality-header {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .quality-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+            font-size: 0.75rem;
+            color: #666;
+            border-bottom: 1px solid #f0eeeb;
+            opacity: 0;
+            transform: translateX(8px);
+            transition: all 0.25s ease;
+        }
+
+        .scene-content.active .quality-row {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scene-content.active .quality-row:nth-child(2) { transition-delay: 0.6s; }
+        .scene-content.active .quality-row:nth-child(3) { transition-delay: 0.75s; }
+        .scene-content.active .quality-row:nth-child(4) { transition-delay: 0.9s; }
+        .scene-content.active .quality-row:nth-child(5) { transition-delay: 1.05s; }
+
+        .quality-row:last-child {
+            border-bottom: none;
+        }
+
+        .check-mark {
+            width: 14px;
+            height: 14px;
+            border: 2px solid #e0ded9;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .check-mark.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .launch-visual {
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 50%;
+            margin: 0 auto 1.2rem;
+            position: relative;
+            transform: scale(0);
+            transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 25px rgba(26, 95, 74, 0.3);
+        }
+
+        .scene-content.active .success-icon {
+            transform: scale(1);
+        }
+
+        .success-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 25px;
+            height: 12px;
+            border: 3px solid white;
+            border-top: none;
+            border-left: none;
+            margin-top: -3px;
+        }
+
+        .launch-text {
+            background: white;
+            padding: 1.25rem 1.75rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: inline-block;
+            transform: translateY(15px);
+            opacity: 0;
+            transition: all 0.4s ease 0.2s;
+        }
+
+        .scene-content.active .launch-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .launch-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .launch-sub {
+            color: #4a4a4a;
+            font-size: 0.85rem;
+        }
+
+        .cta-highlight {
+            margin-top: 1.25rem;
+            padding: 0.875rem 1.25rem;
+            background: linear-gradient(135deg, #f0f7f5 0%, #e8f0ed 100%);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+            transform: translateX(-8px);
+            opacity: 0;
+            transition: all 0.35s ease 0.4s;
+        }
+
+        .scene-content.active .cta-highlight {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .cta-text {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .animation-cta {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .animation-cta-text {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .animation-cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-size: 1.05rem;
+        }
+
+        .animation-cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 95, 74, 0.25);
+        }
+
         .features {
             background: white;
         }
@@ -361,180 +875,6 @@
             color: var(--text-light);
             font-size: 0.95rem;
             line-height: 1.7;
-        }
-
-        .pricing {
-            background: var(--bg-warm);
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            background: white;
-            border-radius: 8px;
-            padding: 2.5rem;
-            text-align: center;
-            border: 1px solid var(--border);
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .pricing-card:hover {
-            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-        }
-
-        .pricing-card.featured {
-            border: 2px solid var(--primary);
-            transform: scale(1.02);
-        }
-
-        .pricing-card.featured::before {
-            content: 'Suosituin';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            padding: 0.4rem 1.2rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .pricing-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-
-        .pricing-desc {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .pricing-price {
-            font-size: 3rem;
-            font-weight: 300;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .pricing-price span {
-            font-size: 1rem;
-            color: var(--text-light);
-        }
-
-        .pricing-note {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            font-style: italic;
-        }
-
-        .pricing-features {
-            list-style: none;
-            text-align: left;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-features li {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.95rem;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .pricing-features li::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--primary);
-            border-radius: 50%;
-        }
-
-        .pricing-cta {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .pricing-cta:hover {
-            background: var(--primary-dark);
-        }
-
-        .process {
-            background: white;
-        }
-
-        .process-steps {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .process-steps::before {
-            content: '';
-            position: absolute;
-            top: 30px;
-            left: 15%;
-            right: 15%;
-            height: 2px;
-            background: var(--border);
-        }
-
-        .process-step {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            background: white;
-            padding: 0 1rem;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            margin: 0 auto 1.5rem;
-            font-weight: 600;
-        }
-
-        .process-step h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .process-step p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            max-width: 200px;
         }
 
         .audience {
@@ -638,77 +978,6 @@
             color: var(--text-light);
         }
 
-        .cta-section {
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 5rem 0;
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section > .container > p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .contact-form {
-            max-width: 500px;
-            margin: 2rem auto 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .contact-form input,
-        .contact-form textarea {
-            padding: 1rem;
-            border: none;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-
-        .contact-form textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .contact-form button {
-            border: none;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
-        .cta-button-white {
-            display: inline-block;
-            background: white;
-            color: var(--primary);
-            padding: 1.125rem 2.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-
-        .cta-button-white:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
         footer {
             background: var(--text);
             color: rgba(255,255,255,0.7);
@@ -730,6 +999,7 @@
             font-size: 1.25rem;
             color: white;
             font-weight: 600;
+            text-decoration: none;
         }
 
         .footer-links {
@@ -763,18 +1033,8 @@
             }
 
             .features-grid,
-            .pricing-grid,
             .audience-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .process-steps {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .process-steps::before {
-                display: none;
             }
 
             .testimonial-grid {
@@ -785,8 +1045,18 @@
                 display: none;
             }
 
-            .form-row {
-                grid-template-columns: 1fr;
+            .refinement-visual {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .steps-container {
+                gap: 30px;
+            }
+
+            .step-line {
+                width: 40px;
+                left: 40px;
             }
         }
     </style>
@@ -795,12 +1065,11 @@
 
     <header>
         <nav>
-            <div class="logo">Verkkokumppani</div>
+            <a href="index.html" class="logo">Verkkokumppani</a>
             <ul class="nav-links">
-                <li><a href="#palvelut">Palvelut</a></li>
-                <li><a href="#hinnat">Hinnat</a></li>
-                <li><a href="#prosessi">Prosessi</a></li>
-                <li><a href="#yhteys" class="nav-cta">Ota yhteyttä</a></li>
+                <li><a href="palvelut.html">Palvelut</a></li>
+                <li><a href="meista.html">Meistä</a></li>
+                <li><a href="otayhteytta.html" class="nav-cta">Ota yhteyttä</a></li>
             </ul>
         </nav>
     </header>
@@ -811,8 +1080,8 @@
                 <h1>Ammattimaiset verkkosivut <span>edullisesti</span></h1>
                 <p class="hero-subtitle">Laadukkaat kotisivut yrityksellesi ilman turhia kustannuksia. Erityisosaamista kampaamoille, kauneushoitoloille ja palvelualan yrityksille.</p>
                 <div>
-                    <a href="#yhteys" class="hero-cta">Pyydä tarjous</a>
-                    <a href="#palvelut" class="hero-secondary">Tutustu palveluihin</a>
+                    <a href="otayhteytta.html" class="hero-cta">Pyydä tarjous</a>
+                    <a href="palvelut.html" class="hero-secondary">Tutustu palveluihin</a>
                 </div>
             </div>
             <div class="hero-visual">
@@ -862,7 +1131,140 @@
         </div>
     </div>
 
-    <section class="features" id="palvelut">
+    <section class="process-animation">
+        <div class="animation-container">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h2>Näin syntyvät sivusi</h2>
+                <p>Asiantuntijan tuki alusta loppuun</p>
+            </div>
+            
+            <div class="animation-stage" id="stage">
+                <div class="steps-container">
+                    <div class="step-item active" id="step1">
+                        <div class="step-circle">1</div>
+                        <div class="step-line"></div>
+                        <div class="step-label">Tilaus</div>
+                    </div>
+                    <div class="step-item" id="step2">
+                        <div class="step-circle">2</div>
+                        <div class="step-line"></div>
+                        <div class="step-label">Suunnittelu</div>
+                    </div>
+                    <div class="step-item" id="step3">
+                        <div class="step-circle">3</div>
+                        <div class="step-line"></div>
+                        <div class="step-label">Viilaus</div>
+                    </div>
+                    <div class="step-item" id="step4">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Valmis</div>
+                    </div>
+                </div>
+
+                <div class="content-wrapper">
+                    <div class="scene-content active" id="scene1">
+                        <div class="form-visual">
+                            <div class="form-row">
+                                <div class="form-input"></div>
+                                <div class="form-input"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-input"></div>
+                                <div class="form-input"></div>
+                            </div>
+                            <div class="form-styles">
+                                <div class="style-pill">Klassinen</div>
+                                <div class="style-pill">Elegantti</div>
+                                <div class="style-pill">Moderni</div>
+                            </div>
+                            <div class="submit-line"></div>
+                        </div>
+                    </div>
+
+                    <div class="scene-content" id="scene2">
+                        <div class="creation-visual">
+                            <div class="conversation-bubbles">
+                                <div class="bubble client">Hei! Haluan keskustella sivujen ilmeestä.</div>
+                                <div class="bubble expert">Totta kai! Suunnitellaan yhdessä täydelliset sivut.</div>
+                            </div>
+                            <div class="creation-status">
+                                <div class="status-indicator">
+                                    <div class="status-dot active"></div>
+                                    <span>Suunnittelu</span>
+                                </div>
+                                <div class="status-indicator">
+                                    <div class="status-dot"></div>
+                                    <span>Toteutus</span>
+                                </div>
+                                <div class="status-indicator">
+                                    <div class="status-dot"></div>
+                                    <span>Viimeistely</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scene-content" id="scene3">
+                        <div class="refinement-visual">
+                            <div class="refinement-left">
+                                <div class="refine-item">
+                                    <div class="refine-icon">V</div>
+                                    <span>Värimaailma viilattu</span>
+                                </div>
+                                <div class="refine-item">
+                                    <div class="refine-icon">T</div>
+                                    <span>Tekstit optimoitu</span>
+                                </div>
+                                <div class="refine-item">
+                                    <div class="refine-icon">K</div>
+                                    <span>Kuvat skaalattu</span>
+                                </div>
+                            </div>
+                            <div class="quality-card">
+                                <div class="quality-header">Tarkistus</div>
+                                <div class="quality-row">
+                                    <div class="check-mark"></div>
+                                    <span>Mobiili</span>
+                                </div>
+                                <div class="quality-row">
+                                    <div class="check-mark"></div>
+                                    <span>Nopeus</span>
+                                </div>
+                                <div class="quality-row">
+                                    <div class="check-mark"></div>
+                                    <span>SEO</span>
+                                </div>
+                                <div class="quality-row">
+                                    <div class="check-mark"></div>
+                                    <span>Yhteystiedot</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scene-content" id="scene4">
+                        <div class="launch-visual">
+                            <div class="success-icon"></div>
+                            <div class="launch-text">
+                                <div class="launch-title">Sivusi ovat valmiit!</div>
+                                <div class="launch-sub">Julkaisu onnistui</div>
+                            </div>
+                            <div class="cta-highlight">
+                                <div class="cta-text">Klikkaa lähetä, ja saat sivut 48h aikana nähtäväksesi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="animation-cta">
+                <p class="animation-cta-text">Täytä tilauslomake ja vastaanota sivut esikatseltavaksi ilmaiseksi</p>
+                <a href="otayhteytta.html" class="animation-cta-button">Täytä tilauslomake</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
         <div class="container">
             <div class="section-header">
                 <h2>Miksi valita meidät?</h2>
@@ -919,94 +1321,6 @@
         </div>
     </section>
 
-    <section class="pricing" id="hinnat">
-        <div class="container">
-            <div class="section-header">
-                <h2>Avoimet hinnat</h2>
-                <p>Ei piilokuluja. Tiedät tarkalleen, mitä saat.</p>
-            </div>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="pricing-name">Perus</div>
-                    <div class="pricing-desc">Yksinkertainen, toimiva</div>
-                    <div class="pricing-price">150€</div>
-                    <div class="pricing-note">+ 10€/kk ylläpito</div>
-                    <ul class="pricing-features">
-                        <li>1-3 sisältösivua</li>
-                        <li>Mobiiliystävällinen</li>
-                        <li>Yhteystietolomake</li>
-                        <li>Google Maps -upotus</li>
-                        <li>Perus-SEO</li>
-                    </ul>
-                    <a href="#yhteys" class="pricing-cta">Valitse</a>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <div class="pricing-name">Yritys</div>
-                    <div class="pricing-desc">Täydellinen paketti</div>
-                    <div class="pricing-price">390€</div>
-                    <div class="pricing-note">+ 15€/kk ylläpito</div>
-                    <ul class="pricing-features">
-                        <li>Rajattomasti sivuja</li>
-                        <li>Ajanvarausjärjestelmä</li>
-                        <li>Kuvagalleria</li>
-                        <li>Some-integraatiot</li>
-                        <li>Laaja SEO</li>
-                        <li>Domain & hosting</li>
-                    </ul>
-                    <a href="#yhteys" class="pricing-cta">Valitse</a>
-                </div>
-                
-                <div class="pricing-card">
-                    <div class="pricing-name">Premium</div>
-                    <div class="pricing-desc">Kaikki + lisäpalvelut</div>
-                    <div class="pricing-price">590€</div>
-                    <div class="pricing-note">+ 25€/kk ylläpito</div>
-                    <ul class="pricing-features">
-                        <li>Kaikki Yritys-paketista</li>
-                        <li>Verkkokauppa</li>
-                        <li>Lahjakorttijärjestelmä</li>
-                        <li>Blogi & sisältö</li>
-                        <li>Analytics & raportit</li>
-                        <li>Etusijalla tuki</li>
-                    </ul>
-                    <a href="#yhteys" class="pricing-cta">Valitse</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="process" id="prosessi">
-        <div class="container">
-            <div class="section-header">
-                <h2>Näin se toimii</h2>
-                <p>Yksinkertainen prosessi alusta loppuun</p>
-            </div>
-            <div class="process-steps">
-                <div class="process-step">
-                    <div class="step-number">1</div>
-                    <h3>Kartoitus</h3>
-                    <p>Kerromme tarpeesi ja toiveesi</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">2</div>
-                    <h3>Suunnittelu</h3>
-                    <p>Luomme luonnoksen hyväksyttäväksi</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">3</div>
-                    <h3>Toteutus</h3>
-                    <p>Rakennamme sivut valmiiksi</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">4</div>
-                    <h3>Julkaisu</h3>
-                    <p>Sivut ovat käytössäsi</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="testimonials">
         <div class="container">
             <div class="section-header">
@@ -1037,36 +1351,89 @@
         </div>
     </section>
 
-    <section class="cta-section" id="yhteys">
-        <div class="container">
-            <h2>Aloitetaanko?</h2>
-            <p>Jätä yhteystietosi, niin otamme sinuun yhteyttä 24 tunnin sisällä.</p>
-            
-            <form action="https://formspree.io/f/xvzbgpoz" method="POST" class="contact-form">
-                <div class="form-row">
-                    <input type="text" name="nimi" placeholder="Nimi" required>
-                    <input type="email" name="email" placeholder="Sähköposti" required>
-                </div>
-                <input type="tel" name="puhelin" placeholder="Puhelinnumero">
-                <textarea name="viesti" placeholder="Kerro lyhyesti tarpeistasi..." rows="4"></textarea>
-                <button type="submit" class="cta-button-white">Lähetä viesti</button>
-            </form>
-            
-            <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
-                Tai lähetä sähköpostia: <a href="mailto:info@verkkokumppani.fi" style="color: white; text-decoration: underline;">info@verkkokumppani.fi</a>
-            </p>
-        </div>
-    </section>
-
     <footer>
         <div class="footer-content">
-            <div class="footer-logo">Verkkokumppani</div>
+            <a href="index.html" class="footer-logo">Verkkokumppani</a>
             <div class="footer-links">
-                <a href="mailto:info@verkkokumppani.fi">info@verkkokumppani.fi</a>
-                <span>Puh. 040 123 4567</span>
+                <a href="palvelut.html">Palvelut</a>
+                <a href="meista.html">Meistä</a>
+                <a href="otayhteytta.html">Ota yhteyttä</a>
             </div>
         </div>
     </footer>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 4;
+        const stepDuration = 3000;
+        let animationInterval;
+
+        const scenes = ['scene1', 'scene2', 'scene3', 'scene4'];
+        const stepItems = ['step1', 'step2', 'step3', 'step4'];
+
+        function updateScene(step) {
+            stepItems.forEach((item, index) => {
+                const el = document.getElementById(item);
+                if (index === step) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+
+            scenes.forEach((scene, index) => {
+                const el = document.getElementById(scene);
+                if (index === step) {
+                    el.classList.remove('exit');
+                    el.classList.add('active');
+                } else if (index < step) {
+                    el.classList.remove('active');
+                    el.classList.add('exit');
+                } else {
+                    el.classList.remove('active', 'exit');
+                }
+            });
+
+            if (step === 2) {
+                setTimeout(() => {
+                    const checks = document.querySelectorAll('#scene3 .check-mark');
+                    checks.forEach((check, i) => {
+                        setTimeout(() => {
+                            check.classList.add('checked');
+                        }, i * 150);
+                    });
+                }, 600);
+            }
+
+            if (step === 0) {
+                document.querySelectorAll('.check-mark').forEach(check => {
+                    check.classList.remove('checked');
+                });
+            }
+        }
+
+        function nextStep() {
+            currentStep = (currentStep + 1) % totalSteps;
+            updateScene(currentStep);
+        }
+
+        function startAnimation() {
+            if (animationInterval) clearInterval(animationInterval);
+            animationInterval = setInterval(nextStep, stepDuration);
+        }
+
+        updateScene(0);
+        startAnimation();
+
+        const stage = document.getElementById('stage');
+        stage.addEventListener('mouseenter', () => {
+            clearInterval(animationInterval);
+        });
+        
+        stage.addEventListener('mouseleave', () => {
+            startAnimation();
+        });
+    </script>
 
 </body>
 </html>
