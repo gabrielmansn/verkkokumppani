@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ota yhteyttä | Verkkokumppani</title>
+    <meta name="description" content="Ota yhteyttä Verkkokumppaniin. Täytä yhteydenottolomake tai lähetä sähköpostia. Vastaamme 24 tunnin sisällä.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5f4a;
+            --primary-light: #2d7a62;
+            --primary-dark: #0f3d2e;
+            --accent: #c9a227;
+            --text: #1a1a1a;
+            --text-light: #4a4a4a;
+            --bg: #fafafa;
+            --bg-warm: #f5f3f0;
+            --border: #e0ddd8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-cta:hover {
+            background: var(--primary-dark);
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        .page-header {
+            margin-top: 80px;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--bg-warm) 0%, #fff 100%);
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-info h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info > p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .method-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-warm);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .method-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .method-content p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .method-content a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .method-content a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-form-wrapper {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+        }
+
+        .contact-form-wrapper h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 95, 74, 0.25);
+        }
+
+        .promise-section {
+            background: var(--bg-warm);
+            text-align: center;
+        }
+
+        .promise-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .promise-item {
+            padding: 2rem;
+        }
+
+        .promise-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .promise-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .promise-item p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .faq-section {
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+        }
+
+        .faq-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .faq-item p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        footer {
+            background: var(--text);
+            color: rgba(255,255,255,0.7);
+            padding: 3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 968px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .promise-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Verkkokumppani</a>
+            <ul class="nav-links">
+                <li><a href="palvelut.html">Palvelut</a></li>
+                <li><a href="meista.html">Meistä</a></li>
+                <li><a href="otayhteytta.html" class="nav-cta">Ota yhteyttä</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Ota yhteyttä</h1>
+            <p>Jätä yhteystietosi, niin otamme sinuun yhteyttä 24 tunnin sisällä. Voit myös lähettää sähköpostia suoraan.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Olemme täällä sinua varten</h2>
+                    <p>Haluamme kuulla tarpeistasi ja kertoa, miten voimme auttaa. Täytä lomake oikealla, niin vastaamme mahdollisimman pian.</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="method-icon">@</div>
+                            <div class="method-content">
+                                <h4>Sähköposti</h4>
+                                <p><a href="mailto:info@verkkokumppani.fi">info@verkkokumppani.fi</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <div class="method-icon">P</div>
+                            <div class="method-content">
+                                <h4>Puhelin</h4>
+                                <p>040 123 4567</p>
+                                <p style="font-size: 0.85rem; color: var(--text-light);">Ma–Pe 9–17</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <div class="method-icon">A</div>
+                            <div class="method-content">
+                                <h4>Vastausaika</h4>
+                                <p>Vastaamme 24 tunnin sisällä</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <h3>Lähetä viesti</h3>
+                    <form action="https://formspree.io/f/xvzbgpoz" method="POST">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nimi">Nimi *</label>
+                                <input type="text" id="nimi" name="nimi" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="yritys">Yritys</label>
+                                <input type="text" id="yritys" name="yritys">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Sähköposti *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="puhelin">Puhelin</label>
+                                <input type="tel" id="puhelin" name="puhelin">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="paketti">Kiinnostava paketti</label>
+                            <select id="paketti" name="paketti">
+                                <option value="">Valitse paketti</option>
+                                <option value="perus">Perus (150€)</option>
+                                <option value="yritys">Yritys (390€)</option>
+                                <option value="premium">Premium (590€)</option>
+                                <option value="ei_tieda">En tiedä vielä</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="viesti">Viesti *</label>
+                            <textarea id="viesti" name="viesti" placeholder="Kerro lyhyesti tarpeistasi..." required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Lähetä viesti</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="promise-section">
+        <div class="container">
+            <div class="promise-grid">
+                <div class="promise-item">
+                    <div class="promise-icon">1</div>
+                    <h4>Nopea vastaus</h4>
+                    <p>Vastaamme kaikkiin yhteydenottoihin 24 tunnin sisällä.</p>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">2</div>
+                    <h4>Ilmainen konsultaatio</h4>
+                    <p>Keskustelemme tarpeistasi ilman sitoutumista.</p>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">3</div>
+                    <h4>Esikatselu ilmaiseksi</h4>
+                    <p>Näet sivut ennen kuin päätät tilauksesta.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Usein kysytyt kysymykset</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h4>Kuinka nopeasti sivut valmistuvat?</h4>
+                    <p>Tyypillisesti sivut valmistuvat 3-5 arkipäivässä siitä, kun olemme saaneet tarvittavat materiaalit. Kiireellisissä tapauksissa voimme toimittaa nopeamminkin.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Mitä jos en ole tyytyväinen lopputulokseen?</h4>
+                    <p>Teemme sivut nähtäväksesi ennen maksua. Jos et ole tyytyväinen, et maksa mitään. Teemme myös tarvittavat muutokset, jotta sivut vastaavat toiveitasi.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Sisältyykö hintaan domain ja hosting?</h4>
+                    <p>Yritys- ja Premium-paketteihin sisältyy domain ja hosting ensimmäiseksi vuodeksi. Perus-paketissa voit liittää olemassa olevan domainin tai ostaa sen erikseen.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Voinko päivittää sivuja itse?</h4>
+                    <p>Kyllä! Sivut rakennetaan helposti päivitettäviksi. Annamme myös käyttöohjeet ja tarvittaessa koulutuksen.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <a href="index.html" class="footer-logo">Verkkokumppani</a>
+            <div class="footer-links">
+                <a href="palvelut.html">Palvelut</a>
+                <a href="meista.html">Meistä</a>
+                <a href="otayhteytta.html">Ota yhteyttä</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
