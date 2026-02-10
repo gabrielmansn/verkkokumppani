@@ -271,7 +271,7 @@
             font-size: 0.95rem;
         }
 
-        /* Kuvat */
+        /* Kuvat - päivitetty 10 kuvan tuki */
         .file-upload-area {
             border: 2px dashed var(--border);
             border-radius: 12px;
@@ -288,6 +288,17 @@
             background: var(--bg-warm);
         }
 
+        .file-upload-area.dragover {
+            border-color: var(--primary);
+            background: var(--bg-warm);
+            transform: scale(1.02);
+        }
+
+        .file-upload-area.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .file-upload-area input[type="file"] {
             position: absolute;
             top: 0;
@@ -296,6 +307,10 @@
             height: 100%;
             opacity: 0;
             cursor: pointer;
+        }
+
+        .file-upload-area.disabled input[type="file"] {
+            cursor: not-allowed;
         }
 
         .upload-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
@@ -310,6 +325,16 @@
         .upload-text span {
             color: var(--text-light);
             font-size: 0.95rem;
+        }
+
+        .upload-limit {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: var(--bg-warm);
+            border-radius: 4px;
+            display: inline-block;
         }
 
         .image-preview-container {
@@ -328,6 +353,16 @@
             border-bottom: 1px solid var(--border);
         }
 
+        .preview-count {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .preview-count.max {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
         .clear-all-btn {
             background: transparent;
             color: var(--error);
@@ -336,6 +371,12 @@
             border-radius: 4px;
             font-size: 0.85rem;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .clear-all-btn:hover {
+            background: var(--error);
+            color: white;
         }
 
         .image-preview-grid {
@@ -350,6 +391,11 @@
             border-radius: 8px;
             overflow: hidden;
             border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .image-preview-item:hover {
+            border-color: var(--primary);
         }
 
         .image-preview-item img {
@@ -372,9 +418,26 @@
             font-size: 1rem;
             opacity: 0;
             transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .image-preview-item:hover .image-remove-btn { opacity: 1; }
+
+        .image-file-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         /* Navigointi */
         .button-group {
@@ -449,6 +512,16 @@
         .elegantti-bg { background: linear-gradient(135deg, #ffb6c1 0%, #4a4a4a 100%); }
         .creative-bg { background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%); }
 
+        /* Virheilmoitus */
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show { display: block; }
+
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .header { padding: 2rem 1.5rem; }
@@ -458,6 +531,7 @@
             .form-row { grid-template-columns: 1fr; }
             .button-group { flex-direction: column-reverse; gap: 1rem; }
             .btn { width: 100%; }
+            .image-preview-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
@@ -669,8 +743,9 @@
                         <input type="text" name="facebook" placeholder="Yrityksen nimi">
                     </div>
 
+                    <!-- Päivitetty kuvaosio 10 kuvan tuella -->
                     <div class="form-group">
-                        <label>Lisää kuvat (valinnainen)</label>
+                        <label>Lisää kuvat (valinnainen, max 10 kuvaa)</label>
                         <div class="file-upload-area" id="dropZone">
                             <input type="file" name="kuvat" id="fileInput" multiple accept="image/*" onchange="handleFiles(this.files)">
                             <div class="upload-icon">📁</div>
@@ -678,11 +753,15 @@
                                 <strong>Klikkaa lisätäksesi kuvia</strong>
                                 <span>tai raahaa ne tähän</span>
                             </div>
+                            <div class="upload-limit">
+                                Voit lisätä enintään 10 kuvaa • Tuettuja muotoja: JPG, PNG, GIF
+                            </div>
                         </div>
+                        <div class="error-message" id="uploadError"></div>
                         
                         <div class="image-preview-container" id="imagePreviewContainer">
                             <div class="preview-header">
-                                <span>Valitut kuvat (<span id="imageCount">0</span>)</span>
+                                <span class="preview-count" id="previewCount">Valittuja kuvia: 0 / 10</span>
                                 <button type="button" class="clear-all-btn" onclick="clearAllImages()">Poista kaikki</button>
                             </div>
                             <div class="image-preview-grid" id="imagePreviewGrid"></div>
@@ -844,6 +923,7 @@
         let currentStep = 1;
         let selectedStyle = null;
         let selectedFiles = [];
+        const MAX_FILES = 10;
 
         function selectStyle(style) {
             selectedStyle = style;
@@ -967,51 +1047,134 @@
             showStep(step);
         }
 
-        // Kuvien käsittely
+        // Päivitetty kuvien käsittely 10 kuvan tuella
         function handleFiles(files) {
-            selectedFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+            const errorDiv = document.getElementById('uploadError');
+            const dropZone = document.getElementById('dropZone');
+            
+            // Resetoi virheilmoitus
+            errorDiv.textContent = '';
+            errorDiv.classList.remove('show');
+            
+            // Muunna FileList taulukoksi
+            const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+            
+            if (newFiles.length === 0) {
+                showError('Valitse vain kuvatiedostoja (JPG, PNG, GIF)');
+                return;
+            }
+            
+            // Tarkista kokonaismäärä
+            if (selectedFiles.length + newFiles.length > MAX_FILES) {
+                const remaining = MAX_FILES - selectedFiles.length;
+                if (remaining <= 0) {
+                    showError(`Voit lisätä enintään ${MAX_FILES} kuvaa. Poista kuvia lisätäksesi uusia.`);
+                    return;
+                }
+                // Lisää vain sen verran kuin mahtuu
+                const filesToAdd = newFiles.slice(0, remaining);
+                selectedFiles = selectedFiles.concat(filesToAdd);
+                showError(`Lisättiin ${filesToAdd.length} kuvaa. ${newFiles.length - filesToAdd.length} kuvaa ei lisätty (raja täynnä).`);
+            } else {
+                selectedFiles = selectedFiles.concat(newFiles);
+            }
+            
             updateImagePreview();
+            updateUploadArea();
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('uploadError');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
         }
 
         function updateImagePreview() {
             const container = document.getElementById('imagePreviewContainer');
             const grid = document.getElementById('imagePreviewGrid');
-            const count = document.getElementById('imageCount');
+            const countSpan = document.getElementById('previewCount');
             
-            count.textContent = selectedFiles.length;
+            // Päivitä laskuri
+            countSpan.textContent = `Valittuja kuvia: ${selectedFiles.length} / ${MAX_FILES}`;
+            
+            // Korosta jos täynnä
+            if (selectedFiles.length >= MAX_FILES) {
+                countSpan.classList.add('max');
+            } else {
+                countSpan.classList.remove('max');
+            }
+            
+            // Näytä/piilota container
             container.classList.toggle('has-images', selectedFiles.length > 0);
             
+            // Generoi esikatselut
             grid.innerHTML = selectedFiles.map((file, index) => {
                 const url = URL.createObjectURL(file);
                 return `
                     <div class="image-preview-item">
                         <img src="${url}" alt="${file.name}">
                         <button type="button" class="image-remove-btn" onclick="removeImage(${index})">×</button>
+                        <div class="image-file-name" title="${file.name}">${file.name}</div>
                     </div>
                 `;
             }).join('');
         }
 
+        function updateUploadArea() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (selectedFiles.length >= MAX_FILES) {
+                dropZone.classList.add('disabled');
+                fileInput.disabled = true;
+            } else {
+                dropZone.classList.remove('disabled');
+                fileInput.disabled = false;
+            }
+        }
+
         function removeImage(index) {
             selectedFiles.splice(index, 1);
             updateImagePreview();
+            updateUploadArea();
         }
 
         function clearAllImages() {
             selectedFiles = [];
             updateImagePreview();
+            updateUploadArea();
         }
 
-        // Drag and drop
+        // Drag and drop -parannukset
         const dropZone = document.getElementById('dropZone');
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => {
+        
+        ['dragenter', 'dragover'].forEach(e => {
             dropZone.addEventListener(e, (ev) => {
                 ev.preventDefault();
                 ev.stopPropagation();
+                if (selectedFiles.length < MAX_FILES) {
+                    dropZone.classList.add('dragover');
+                }
             });
         });
+
+        ['dragleave', 'drop'].forEach(e => {
+            dropZone.addEventListener(e, (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                dropZone.classList.remove('dragover');
+            });
+        });
+
         dropZone.addEventListener('drop', (e) => {
-            handleFiles(e.dataTransfer.files);
+            if (selectedFiles.length < MAX_FILES) {
+                handleFiles(e.dataTransfer.files);
+            } else {
+                showError(`Voit lisätä enintään ${MAX_FILES} kuvaa`);
+            }
         });
 
         // Validointi
