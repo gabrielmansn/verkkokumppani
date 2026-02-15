@@ -131,6 +131,7 @@
         input[type="email"],
         input[type="tel"],
         input[type="color"],
+        input[type="url"],
         textarea,
         select {
             width: 100%;
@@ -522,6 +523,31 @@
             font-size: 0.95rem;
         }
 
+        /* "Käytä omia värejä" -kortti */
+        .option-card.custom-colors {
+            border: 2px dashed var(--primary);
+            background: linear-gradient(135deg, #f0f9f4 0%, #e8f5e9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+
+        .option-card.custom-colors:hover {
+            background: linear-gradient(135deg, #e8f5e9 0%, #d0e8d4 100%);
+        }
+
+        .option-card.custom-colors .custom-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-card.custom-colors .color-name {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
         /* HEX Color Picker */
         .custom-color-section {
             margin-top: 2rem;
@@ -634,229 +660,97 @@
             font-weight: 600;
         }
 
-        /* Kuvat - Yleiskuvat */
-        .file-upload-area {
-            border: 2px dashed var(--border);
-            border-radius: 12px;
-            padding: 3rem 2rem;
-            text-align: center;
-            transition: all 0.3s;
-            background: var(--bg);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .file-upload-area:hover {
-            border-color: var(--primary);
-            background: var(--bg-warm);
-        }
-
-        .file-upload-area.dragover {
-            border-color: var(--primary);
-            background: var(--bg-warm);
-            transform: scale(1.02);
-        }
-
-        .file-upload-area.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .file-upload-area input[type="file"] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .file-upload-area.disabled input[type="file"] {
-            cursor: not-allowed;
-        }
-
-        .upload-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
-
-        .upload-text strong {
-            display: block;
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-            color: var(--primary);
-        }
-
-        .upload-text span {
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-
-        .upload-limit {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            background: var(--bg-warm);
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        /* Logoille erillinen laatikko */
-        .logo-upload-area {
-            border: 2px dashed #667eea;
-            border-radius: 12px;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            transition: all 0.3s;
-            background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
-            cursor: pointer;
-            position: relative;
+        /* Kuvien URL-syöttö */
+        .url-input-section {
             margin-bottom: 1.5rem;
         }
 
-        .logo-upload-area:hover {
-            border-color: #764ba2;
-            background: linear-gradient(135deg, #e8edff 0%, #dde3ff 100%);
-        }
-
-        .logo-upload-area.dragover {
-            border-color: #764ba2;
-            transform: scale(1.02);
-        }
-
-        .logo-upload-area input[type="file"] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .logo-icon { 
-            font-size: 2.5rem; 
-            margin-bottom: 0.75rem; 
-            color: #667eea;
-        }
-
-        .logo-text strong {
-            display: block;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-            color: #667eea;
-        }
-
-        .logo-text span {
-            color: var(--text-light);
-            font-size: 0.875rem;
-        }
-
-        .logo-hint {
-            font-size: 0.75rem;
-            color: #718096;
-            margin-top: 0.5rem;
-        }
-
-        .image-preview-container {
-            margin-top: 1.5rem;
-            display: none;
-        }
-
-        .image-preview-container.has-images { display: block; }
-
-        .preview-header {
+        .url-input-group {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border);
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
-        .preview-count {
-            font-weight: 500;
-            color: var(--text);
+        .url-input-group input {
+            flex: 1;
         }
 
-        .preview-count.max {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .clear-all-btn {
-            background: transparent;
-            color: var(--error);
-            border: 1px solid var(--error);
-            padding: 0.5rem 1rem;
+        .url-input-group button {
+            padding: 0.875rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
             border-radius: 4px;
-            font-size: 0.85rem;
             cursor: pointer;
+            font-weight: 500;
             transition: all 0.3s;
         }
 
-        .clear-all-btn:hover {
+        .url-input-group button:hover {
+            background: var(--primary-dark);
+        }
+
+        .url-input-group button:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+        }
+
+        .url-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .url-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .url-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .url-item .url-text {
+            flex: 1;
+            font-size: 0.875rem;
+            color: var(--text);
+            word-break: break-all;
+        }
+
+        .url-item .remove-url-btn {
+            background: transparent;
+            color: var(--error);
+            border: 1px solid var(--error);
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .url-item .remove-url-btn:hover {
             background: var(--error);
             color: white;
         }
 
-        .image-preview-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 1rem;
+        .url-counter {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
         }
 
-        .image-preview-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid var(--border);
-            transition: all 0.3s;
-        }
-
-        .image-preview-item:hover {
-            border-color: var(--primary);
-        }
-
-        .image-preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .image-remove-btn {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 24px;
-            height: 24px;
-            background: rgba(220, 38, 38, 0.9);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .image-preview-item:hover .image-remove-btn { opacity: 1; }
-
-        .image-file-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            font-size: 0.7rem;
-            padding: 0.25rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .url-counter.max {
+            color: var(--primary);
+            font-weight: 600;
         }
 
         /* Navigointi */
@@ -990,8 +884,8 @@
             .form-row { grid-template-columns: 1fr; }
             .button-group { flex-direction: column-reverse; gap: 1rem; }
             .btn { width: 100%; }
-            .image-preview-grid { grid-template-columns: repeat(3, 1fr); }
             .color-picker-wrapper { grid-template-columns: 1fr; }
+            .url-input-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -1017,7 +911,7 @@
                 <div class="progress-step" data-step="5">5</div>
             </div>
 
-            <form action="https://formspree.io/f/xvzbgpoz" method="POST" enctype="multipart/form-data" id="tilausForm">
+            <form action="https://formspree.io/f/xvzbgpoz" method="POST" id="tilausForm">
                 <input type="hidden" name="_subject" value="Uusi verkkosivutilaus - Verkkokumppani">
                 <input type="text" name="_gotcha" style="display:none">
                 
@@ -1163,12 +1057,12 @@
                     
                     <div class="option-grid" id="variGrid"></div>
 
-                    <div class="custom-color-section">
-                        <div class="custom-color-header">🎨 Tai määritä oma väri (valinnainen)</div>
+                    <div class="custom-color-section" id="customColorSection" style="display: none;">
+                        <div class="custom-color-header">🎨 Määritä omat värisi</div>
                         <div class="color-picker-wrapper">
                             <div class="picker-area">
                                 <div class="color-input-group">
-                                    <label>Valitse väri</label>
+                                    <label>Valitse pääväri</label>
                                     <input type="color" id="colorPicker" value="#1a5f4a">
                                 </div>
                                 <div class="color-input-group">
@@ -1231,47 +1125,34 @@
                         <input type="text" name="facebook" id="facebook" placeholder="Yrityksen nimi">
                     </div>
 
-                    <!-- Logoille erillinen laatikko -->
+                    <!-- Logo URL -->
                     <div class="form-group">
-                        <label>Lisää logo (valinnainen)</label>
-                        <div class="logo-upload-area" id="logoDropZone">
-                            <input type="file" name="logo" id="logoInput" accept="image/svg+xml,image/png,image/jpeg">
-                            <div class="logo-icon">🏷️</div>
-                            <div class="logo-text">
-                                <strong>Raahaa logo tähän</strong>
-                                <span>tai klikkaa valitaksesi</span>
+                        <label>Logo (valinnainen)</label>
+                        <div class="url-input-section">
+                            <div class="url-input-group">
+                                <input type="url" id="logoUrlInput" placeholder="https://esimerkki.fi/logo.png">
+                                <button type="button" onclick="addLogoUrl()" id="addLogoBtn">Lisää</button>
                             </div>
-                            <div class="logo-hint">Suositeltu: SVG, PNG tai JPEG • Läpinäkyvä tausta</div>
-                        </div>
-                        <div class="error-message" id="logoError"></div>
-                        <div class="image-preview-container" id="logoPreviewContainer">
-                            <div class="preview-header">
-                                <span class="preview-count">Logo valittu</span>
-                                <button type="button" class="clear-all-btn" onclick="clearLogo()">Poista</button>
-                            </div>
-                            <div class="image-preview-grid" id="logoPreviewGrid"></div>
+                            <div class="hint">Syötä logon URL-osoite (suositeltu: läpinäkyvä PNG tai SVG)</div>
+                            <div class="error-message" id="logoError"></div>
+                            <div class="url-list" id="logoUrlList"></div>
+                            <input type="hidden" name="logo_url" id="logoUrlHidden">
                         </div>
                     </div>
 
-                    <!-- Yleiskuvat -->
+                    <!-- Kuvien URL:t -->
                     <div class="form-group">
-                        <label>Lisää kuvia (valinnainen, max 10 kuvaa)</label>
-                        <div class="file-upload-area" id="dropZone">
-                            <input type="file" name="kuvat" id="fileInput" multiple accept="image/*">
-                            <div class="upload-icon">📁</div>
-                            <div class="upload-text">
-                                <strong>Klikkaa lisätäksesi kuvia</strong>
-                                <span>tai raahaa ne tähän</span>
+                        <label>Kuvat (valinnainen, max 10 kuvaa)</label>
+                        <div class="url-input-section">
+                            <div class="url-input-group">
+                                <input type="url" id="imageUrlInput" placeholder="https://esimerkki.fi/kuva.jpg">
+                                <button type="button" onclick="addImageUrl()" id="addImageBtn" disabled>Lisää</button>
                             </div>
-                            <div class="upload-limit">Voit lisätä enintään 10 kuvaa • JPG, PNG, GIF</div>
-                        </div>
-                        <div class="error-message" id="uploadError"></div>
-                        <div class="image-preview-container" id="imagePreviewContainer">
-                            <div class="preview-header">
-                                <span class="preview-count" id="previewCount">Valittuja kuvia: 0 / 10</span>
-                                <button type="button" class="clear-all-btn" onclick="clearAllImages()">Poista kaikki</button>
-                            </div>
-                            <div class="image-preview-grid" id="imagePreviewGrid"></div>
+                            <div class="hint">Syötä kuvien URL-osoitteet yksi kerrallaan</div>
+                            <div class="error-message" id="imageUrlError"></div>
+                            <div class="url-counter" id="urlCounter">Kuvia lisätty: 0 / 10</div>
+                            <div class="url-list" id="imageUrlList"></div>
+                            <input type="hidden" name="kuva_urlit" id="imageUrlsHidden">
                         </div>
                     </div>
 
@@ -1465,9 +1346,10 @@
 
         let currentStep = 1;
         let selectedStyle = null;
-        let selectedFiles = [];
-        let logoFile = null;
-        const MAX_FILES = 10;
+        let imageUrls = [];
+        let logoUrl = null;
+        const MAX_IMAGES = 10;
+        let useCustomColors = false;
 
         // Color picker
         const colorPicker = document.getElementById('colorPicker');
@@ -1559,20 +1441,51 @@
             const v = varit[selectedStyle];
             document.getElementById('variSubtitle').textContent = `Valitse ${selectedStyle} tyyliin sopiva väriteema`;
             
-            grid.innerHTML = v.map((vari, i) => `
+            // Lisää "Käytä omia värejä" -vaihtoehto ensimmäiseksi
+            const customColorsCard = `
+                <label class="option-card custom-colors" onclick="selectCustomColors(this)">
+                    <input type="radio" name="valittu_variteema" value="Omat värit" id="customColorsRadio">
+                    <div class="custom-icon">🎨</div>
+                    <div class="color-name">Käytä omia värejä</div>
+                </label>
+            `;
+            
+            const colorCards = v.map((vari, i) => `
                 <label class="option-card" onclick="selectColor('${vari.nimi}', this)">
                     <input type="radio" name="valittu_variteema" value="${vari.nimi}" required>
                     <div class="color-preview" style="background: ${vari.gradient}"></div>
                     <div class="color-name">${vari.nimi}</div>
                 </label>
             `).join('');
+            
+            grid.innerHTML = customColorsCard + colorCards;
         }
 
-        function selectColor(name, el) {
+        function selectCustomColors(el) {
+            useCustomColors = true;
             document.getElementById('variSeuraava').disabled = false;
             document.querySelectorAll('#variGrid .option-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
             el.querySelector('input').checked = true;
+            
+            // Näytä värivalitsin
+            document.getElementById('customColorSection').style.display = 'block';
+            
+            // Päivitä yhteenveto
+            updateSummary();
+        }
+
+        function selectColor(name, el) {
+            useCustomColors = false;
+            document.getElementById('variSeuraava').disabled = false;
+            document.querySelectorAll('#variGrid .option-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            el.querySelector('input').checked = true;
+            
+            // Piilota värivalitsin
+            document.getElementById('customColorSection').style.display = 'none';
+            document.getElementById('customColorValue').value = '';
+            
             updateSummary();
         }
 
@@ -1586,7 +1499,7 @@
             if (fontti) document.getElementById('summaryFontti').textContent = fontti.value;
             if (vari) document.getElementById('summaryVari').textContent = vari.value;
             
-            if (hex) {
+            if (hex && useCustomColors) {
                 document.getElementById('summaryHexRow').style.display = 'flex';
                 document.getElementById('summaryHex').textContent = hex.split(',')[0];
             } else {
@@ -1641,19 +1554,37 @@
             showStep(step);
         }
 
-        // Logo handling
-        function handleLogo(file) {
+        // Logo URL handling
+        function addLogoUrl() {
+            const input = document.getElementById('logoUrlInput');
+            const url = input.value.trim();
             const errorDiv = document.getElementById('logoError');
+            
             errorDiv.textContent = '';
             errorDiv.classList.remove('show');
             
-            if (!file.type.startsWith('image/')) {
-                showLogoError('Valitse kuvatiedosto (SVG, PNG, JPEG)');
+            if (!url) {
+                showLogoError('Syötä URL-osoite');
                 return;
             }
             
-            logoFile = file;
+            if (!isValidUrl(url)) {
+                showLogoError('Syötä kelvollinen URL-osoite');
+                return;
+            }
+            
+            logoUrl = url;
             updateLogoPreview();
+            input.value = '';
+        }
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
         }
 
         function showLogoError(msg) {
@@ -1664,166 +1595,107 @@
         }
 
         function updateLogoPreview() {
-            const container = document.getElementById('logoPreviewContainer');
-            const grid = document.getElementById('logoPreviewGrid');
+            const list = document.getElementById('logoUrlList');
+            document.getElementById('logoUrlHidden').value = logoUrl;
             
-            container.classList.add('has-images');
-            const url = URL.createObjectURL(logoFile);
-            grid.innerHTML = `
-                <div class="image-preview-item">
-                    <img src="${url}" alt="${logoFile.name}">
-                    <button type="button" class="image-remove-btn" onclick="clearLogo()">×</button>
-                    <div class="image-file-name" title="${logoFile.name}">${logoFile.name}</div>
+            list.innerHTML = `
+                <div class="url-item">
+                    <img src="${logoUrl}" alt="Logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22><rect width=%2250%22 height=%2250%22 fill=%22%23ddd%22/><text x=%2225%22 y=%2225%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22>Logo</text></svg>'">
+                    <div class="url-text">${logoUrl}</div>
+                    <button type="button" class="remove-url-btn" onclick="removeLogoUrl()">Poista</button>
                 </div>
             `;
+        }
+
+        function removeLogoUrl() {
+            logoUrl = null;
+            document.getElementById('logoUrlList').innerHTML = '';
+            document.getElementById('logoUrlHidden').value = '';
+        }
+
+        // Image URLs handling
+        function addImageUrl() {
+            const input = document.getElementById('imageUrlInput');
+            const url = input.value.trim();
+            const errorDiv = document.getElementById('imageUrlError');
             
-            // Update file input
-            const dt = new DataTransfer();
-            dt.items.add(logoFile);
-            document.getElementById('logoInput').files = dt.files;
-        }
-
-        function clearLogo() {
-            logoFile = null;
-            document.getElementById('logoPreviewContainer').classList.remove('has-images');
-            document.getElementById('logoPreviewGrid').innerHTML = '';
-            document.getElementById('logoInput').value = '';
-        }
-
-        // Logo event listeners
-        const logoDropZone = document.getElementById('logoDropZone');
-        ['dragenter', 'dragover'].forEach(e => {
-            logoDropZone.addEventListener(e, ev => {
-                ev.preventDefault();
-                logoDropZone.classList.add('dragover');
-            });
-        });
-        ['dragleave', 'drop'].forEach(e => {
-            logoDropZone.addEventListener(e, ev => {
-                ev.preventDefault();
-                logoDropZone.classList.remove('dragover');
-            });
-        });
-        logoDropZone.addEventListener('drop', e => {
-            if (e.dataTransfer.files.length > 0) {
-                handleLogo(e.dataTransfer.files[0]);
-            }
-        });
-        document.getElementById('logoInput').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                handleLogo(e.target.files[0]);
-            }
-        });
-
-        // General images handling
-        function handleFiles(files) {
-            const errorDiv = document.getElementById('uploadError');
             errorDiv.textContent = '';
             errorDiv.classList.remove('show');
             
-            const newFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
-            if (newFiles.length === 0) {
-                showUploadError('Valitse vain kuvatiedostoja');
+            if (!url) {
+                showImageError('Syötä URL-osoite');
                 return;
             }
             
-            if (selectedFiles.length + newFiles.length > MAX_FILES) {
-                const remaining = MAX_FILES - selectedFiles.length;
-                if (remaining <= 0) {
-                    showUploadError(`Voit lisätä enintään ${MAX_FILES} kuvaa`);
-                    return;
-                }
-                selectedFiles = selectedFiles.concat(newFiles.slice(0, remaining));
-                showUploadError(`Lisättiin ${Math.min(newFiles.length, remaining)} kuvaa. Raja täynnä.`);
-            } else {
-                selectedFiles = selectedFiles.concat(newFiles);
+            if (!isValidUrl(url)) {
+                showImageError('Syötä kelvollinen URL-osoite');
+                return;
             }
             
-            updatePreview();
-            updateUpload();
-            updateFileInput();
+            if (imageUrls.includes(url)) {
+                showImageError('Tämä kuva on jo lisätty');
+                return;
+            }
+            
+            if (imageUrls.length >= MAX_IMAGES) {
+                showImageError(`Voit lisätä enintään ${MAX_IMAGES} kuvaa`);
+                return;
+            }
+            
+            imageUrls.push(url);
+            updateImageList();
+            input.value = '';
+            updateImageCounter();
         }
 
-        function showUploadError(msg) {
-            const errorDiv = document.getElementById('uploadError');
+        function showImageError(msg) {
+            const errorDiv = document.getElementById('imageUrlError');
             errorDiv.textContent = msg;
             errorDiv.classList.add('show');
             setTimeout(() => errorDiv.classList.remove('show'), 5000);
         }
 
-        function updatePreview() {
-            const container = document.getElementById('imagePreviewContainer');
-            const grid = document.getElementById('imagePreviewGrid');
-            const count = document.getElementById('previewCount');
+        function updateImageList() {
+            const list = document.getElementById('imageUrlList');
+            document.getElementById('imageUrlsHidden').value = imageUrls.join('\n');
             
-            count.textContent = `Valittuja kuvia: ${selectedFiles.length} / ${MAX_FILES}`;
-            count.classList.toggle('max', selectedFiles.length >= MAX_FILES);
-            container.classList.toggle('has-images', selectedFiles.length > 0);
-            
-            grid.innerHTML = selectedFiles.map((file, i) => {
-                const url = URL.createObjectURL(file);
-                return `
-                    <div class="image-preview-item">
-                        <img src="${url}" alt="${file.name}">
-                        <button type="button" class="image-remove-btn" onclick="removeImage(${i})">×</button>
-                        <div class="image-file-name" title="${file.name}">${file.name}</div>
-                    </div>
-                `;
-            }).join('');
+            list.innerHTML = imageUrls.map((url, i) => `
+                <div class="url-item">
+                    <img src="${url}" alt="Kuva ${i + 1}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22><rect width=%2250%22 height=%2250%22 fill=%22%23ddd%22/><text x=%2225%22 y=%2225%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22>Kuva</text></svg>'">
+                    <div class="url-text">${url}</div>
+                    <button type="button" class="remove-url-btn" onclick="removeImageUrl(${i})">Poista</button>
+                </div>
+            `).join('');
         }
 
-        function updateUpload() {
-            const zone = document.getElementById('dropZone');
-            const input = document.getElementById('fileInput');
-            if (selectedFiles.length >= MAX_FILES) {
-                zone.classList.add('disabled');
+        function removeImageUrl(index) {
+            imageUrls.splice(index, 1);
+            updateImageList();
+            updateImageCounter();
+        }
+
+        function updateImageCounter() {
+            const counter = document.getElementById('urlCounter');
+            const addBtn = document.getElementById('addImageBtn');
+            const input = document.getElementById('imageUrlInput');
+            
+            counter.textContent = `Kuvia lisätty: ${imageUrls.length} / ${MAX_IMAGES}`;
+            counter.classList.toggle('max', imageUrls.length >= MAX_IMAGES);
+            
+            if (imageUrls.length >= MAX_IMAGES) {
+                addBtn.disabled = true;
                 input.disabled = true;
+                input.placeholder = 'Kuvien enimmäismäärä saavutettu';
             } else {
-                zone.classList.remove('disabled');
+                addBtn.disabled = false;
                 input.disabled = false;
+                input.placeholder = 'https://esimerkki.fi/kuva.jpg';
             }
         }
 
-        function updateFileInput() {
-            const input = document.getElementById('fileInput');
-            const dt = new DataTransfer();
-            selectedFiles.forEach(f => dt.items.add(f));
-            input.files = dt.files;
-        }
-
-        function removeImage(i) {
-            selectedFiles.splice(i, 1);
-            updatePreview();
-            updateUpload();
-            updateFileInput();
-        }
-
-        function clearAllImages() {
-            selectedFiles = [];
-            updatePreview();
-            updateUpload();
-            updateFileInput();
-        }
-
-        // General images event listeners
-        const dropZone = document.getElementById('dropZone');
-        ['dragenter', 'dragover'].forEach(e => {
-            dropZone.addEventListener(e, ev => {
-                ev.preventDefault();
-                if (selectedFiles.length < MAX_FILES) dropZone.classList.add('dragover');
-            });
-        });
-        ['dragleave', 'drop'].forEach(e => {
-            dropZone.addEventListener(e, ev => {
-                ev.preventDefault();
-                dropZone.classList.remove('dragover');
-            });
-        });
-        dropZone.addEventListener('drop', e => {
-            if (selectedFiles.length < MAX_FILES) handleFiles(e.dataTransfer.files);
-        });
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            handleFiles(e.target.files);
+        // Enable add button when input has content
+        document.getElementById('imageUrlInput').addEventListener('input', function() {
+            document.getElementById('addImageBtn').disabled = this.value.trim() === '';
         });
 
         // Form submission
@@ -1842,6 +1714,7 @@
 
         // Initialize
         updateColor('#1a5f4a');
+        updateImageCounter();
     </script>
 </body>
 </html>
