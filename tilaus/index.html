@@ -166,7 +166,6 @@
             gap: 1rem;
         }
 
-        /* TYylien valintaruudut - kukin tyylilleen */
         .style-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -181,7 +180,6 @@
 
         .style-option input { position: absolute; opacity: 0; }
 
-        /* Klassinen tyyli */
         .style-card.klassinen {
             border: 2px solid #d4c5b0;
             border-radius: 4px;
@@ -227,7 +225,6 @@
             transform: translateY(-4px);
         }
 
-        /* Moderni tyyli */
         .style-card.moderni {
             border: 2px solid #e0e0e0;
             border-radius: 12px;
@@ -272,7 +269,6 @@
             transform: translateY(-4px);
         }
 
-        /* Luksus tyyli */
         .style-card.luksus {
             border: 2px solid #d4af37;
             border-radius: 8px;
@@ -320,7 +316,6 @@
             transform: translateY(-4px);
         }
 
-        /* Kotoisa tyyli */
         .style-card.kotoisa {
             border: 2px solid #d4a574;
             border-radius: 20px;
@@ -365,7 +360,6 @@
             transform: translateY(-4px);
         }
 
-        /* Elegantti tyyli */
         .style-card.elegantti {
             border: 2px solid #e8d5d5;
             border-radius: 30px 30px 30px 4px;
@@ -411,7 +405,6 @@
             transform: translateY(-4px);
         }
 
-        /* Creative tyyli */
         .style-card.creative {
             border: 3px solid transparent;
             border-radius: 12px;
@@ -466,7 +459,6 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.15);
         }
 
-        /* Fontin ja värin valinta */
         .option-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -522,7 +514,6 @@
             font-size: 0.95rem;
         }
 
-        /* "Käytä omia värejä" -kortti */
         .option-card.custom-colors {
             border: 2px dashed var(--primary);
             background: linear-gradient(135deg, #f0f9f4 0%, #e8f5e9 100%);
@@ -547,7 +538,6 @@
             font-weight: 600;
         }
 
-        /* HEX Color Picker */
         .custom-color-section {
             margin-top: 2rem;
             padding: 1.5rem;
@@ -659,7 +649,6 @@
             font-weight: 600;
         }
 
-        /* Kuvat - Yleiskuvat */
         .file-upload-area {
             border: 2px dashed var(--border);
             border-radius: 12px;
@@ -725,7 +714,6 @@
             display: inline-block;
         }
 
-        /* Logoille erillinen laatikko */
         .logo-upload-area {
             border: 2px dashed #667eea;
             border-radius: 12px;
@@ -884,7 +872,16 @@
             text-overflow: ellipsis;
         }
 
-        /* Navigointi */
+        .compression-info {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #e8f5e9;
+            border-radius: 4px;
+            border-left: 3px solid var(--success);
+        }
+
         .button-group {
             display: flex;
             justify-content: space-between;
@@ -931,7 +928,6 @@
             padding: 0.5rem;
         }
 
-        /* Yhteenveto */
         .summary-box {
             background: var(--bg-warm);
             border-radius: 8px;
@@ -959,7 +955,6 @@
             color: var(--primary-dark);
         }
 
-        /* Virheilmoitus */
         .error-message {
             color: var(--error);
             font-size: 0.85rem;
@@ -973,7 +968,6 @@
 
         .error-message.show { display: block; }
 
-        /* Latausindikaattori */
         .loading-overlay {
             display: none;
             position: fixed;
@@ -1024,7 +1018,7 @@
 
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <p>Muunnetaan kuvia ja lähetetään tilausta...</p>
+        <p id="loadingText">Pakataan kuvia...</p>
     </div>
 
     <div class="container">
@@ -1042,7 +1036,7 @@
                 <div class="progress-step" data-step="5">5</div>
             </div>
 
-            <form action="https://formspree.io/f/xvzbgpoz" method="POST" id="tilausForm">
+            <form action="https://formspree.io/f/xvzbgpoz" method="POST" enctype="multipart/form-data" id="tilausForm">
                 <input type="hidden" name="_subject" value="Uusi verkkosivutilaus - Verkkokumppani">
                 <input type="text" name="_gotcha" style="display:none">
                 
@@ -1256,19 +1250,20 @@
                         <input type="text" name="facebook" id="facebook" placeholder="Yrityksen nimi">
                     </div>
 
-                    <!-- Logoille erillinen laatikko -->
+                    <!-- Logo -->
                     <div class="form-group">
                         <label>Lisää logo (valinnainen)</label>
                         <div class="logo-upload-area" id="logoDropZone">
-                            <input type="file" name="logo" id="logoInput" accept="image/svg+xml,image/png,image/jpeg">
+                            <input type="file" name="logo" id="logoInput" accept="image/svg+xml,image/png,image/jpeg,image/webp">
                             <div class="logo-icon">🏷️</div>
                             <div class="logo-text">
                                 <strong>Raahaa logo tähän</strong>
                                 <span>tai klikkaa valitaksesi</span>
                             </div>
-                            <div class="logo-hint">Suositeltu: SVG, PNG tai JPEG • Läpinäkyvä tausta</div>
+                            <div class="logo-hint">Suositeltu: SVG, PNG tai JPEG • Kuvat pakataan automaattisesti</div>
                         </div>
                         <div class="error-message" id="logoError"></div>
+                        <div class="compression-info" id="logoCompressionInfo" style="display: none;"></div>
                         <div class="image-preview-container" id="logoPreviewContainer">
                             <div class="preview-header">
                                 <span class="preview-count">Logo valittu</span>
@@ -1278,7 +1273,7 @@
                         </div>
                     </div>
 
-                    <!-- Yleiskuvat -->
+                    <!-- Kuvat -->
                     <div class="form-group">
                         <label>Lisää kuvia (valinnainen, max 10 kuvaa)</label>
                         <div class="file-upload-area" id="dropZone">
@@ -1288,9 +1283,10 @@
                                 <strong>Klikkaa lisätäksesi kuvia</strong>
                                 <span>tai raahaa ne tähän</span>
                             </div>
-                            <div class="upload-limit">Voit lisätä enintään 10 kuvaa • JPG, PNG, GIF</div>
+                            <div class="upload-limit">Max 10 kuvaa • Kuvat pakataan automaattisesti ennen lähetystä</div>
                         </div>
                         <div class="error-message" id="uploadError"></div>
+                        <div class="compression-info" id="compressionInfo" style="display: none;"></div>
                         <div class="image-preview-container" id="imagePreviewContainer">
                             <div class="preview-header">
                                 <span class="preview-count" id="previewCount">Valittuja kuvia: 0 / 10</span>
@@ -1585,7 +1581,6 @@
             const v = varit[selectedStyle];
             document.getElementById('variSubtitle').textContent = `Valitse ${selectedStyle} tyyliin sopiva väriteema`;
             
-            // Lisää "Käytä omia värejä" -vaihtoehto ensimmäiseksi
             const customColorsCard = `
                 <label class="option-card custom-colors" onclick="selectCustomColors(this)">
                     <input type="radio" name="valittu_variteema" value="Omat värit" id="customColorsRadio">
@@ -1611,11 +1606,7 @@
             document.querySelectorAll('#variGrid .option-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
             el.querySelector('input').checked = true;
-            
-            // Näytä värivalitsin
             document.getElementById('customColorSection').style.display = 'block';
-            
-            // Päivitä yhteenveto
             updateSummary();
         }
 
@@ -1625,11 +1616,8 @@
             document.querySelectorAll('#variGrid .option-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
             el.querySelector('input').checked = true;
-            
-            // Piilota värivalitsin
             document.getElementById('customColorSection').style.display = 'none';
             document.getElementById('customColorValue').value = '';
-            
             updateSummary();
         }
 
@@ -1698,25 +1686,94 @@
             showStep(step);
         }
 
+        // KUVANKÄSITTELY JA PAKKAUS
+
+        // Pakkaa kuva canvasin kautta
+        async function compressImage(file, maxWidth = 1200, maxHeight = 1200, quality = 0.7) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        // Säilytä mittasuhteet
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Muunna blobiksi
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                // Luo uusi tiedosto
+                                const compressedFile = new File([blob], file.name, {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now()
+                                });
+                                resolve({
+                                    file: compressedFile,
+                                    originalSize: file.size,
+                                    compressedSize: blob.size,
+                                    reduction: ((file.size - blob.size) / file.size * 100).toFixed(1)
+                                });
+                            } else {
+                                reject(new Error('Pakkaus epäonnistui'));
+                            }
+                        }, 'image/jpeg', quality);
+                    };
+                    img.onerror = reject;
+                    img.src = event.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
         // Logo handling
-        function handleLogo(file) {
+        async function handleLogo(file) {
             const errorDiv = document.getElementById('logoError');
+            const infoDiv = document.getElementById('logoCompressionInfo');
             errorDiv.textContent = '';
             errorDiv.classList.remove('show');
+            infoDiv.style.display = 'none';
             
             if (!file.type.startsWith('image/')) {
                 showLogoError('Valitse kuvatiedosto (SVG, PNG, JPEG)');
                 return;
             }
             
-            // Tarkista tiedostokoko (max 2MB)
-            if (file.size > 2 * 1024 * 1024) {
-                showLogoError('Logo saa olla enintään 2MB');
-                return;
+            try {
+                // Pakkaa logo
+                const compressed = await compressImage(file, 800, 800, 0.8);
+                logoFile = compressed.file;
+                
+                // Näytä pakkaustiedot
+                infoDiv.textContent = `Pakattu: ${(compressed.originalSize / 1024 / 1024).toFixed(2)}MB → ${(compressed.compressedSize / 1024).toFixed(0)}KB (${compressed.reduction}% pienempi)`;
+                infoDiv.style.display = 'block';
+                
+                updateLogoPreview();
+            } catch (error) {
+                console.error('Virhe logon pakkaamisessa:', error);
+                // Jos pakkaus epäonnistuu, käytä alkuperäistä
+                logoFile = file;
+                updateLogoPreview();
             }
-            
-            logoFile = file;
-            updateLogoPreview();
         }
 
         function showLogoError(msg) {
@@ -1745,6 +1802,7 @@
             logoFile = null;
             document.getElementById('logoPreviewContainer').classList.remove('has-images');
             document.getElementById('logoPreviewGrid').innerHTML = '';
+            document.getElementById('logoCompressionInfo').style.display = 'none';
             document.getElementById('logoInput').value = '';
         }
 
@@ -1774,8 +1832,9 @@
         });
 
         // General images handling
-        function handleFiles(files) {
+        async function handleFiles(files) {
             const errorDiv = document.getElementById('uploadError');
+            const infoDiv = document.getElementById('compressionInfo');
             errorDiv.textContent = '';
             errorDiv.classList.remove('show');
             
@@ -1785,23 +1844,38 @@
                 return;
             }
             
-            // Tarkista tiedostokoot (max 2MB per kuva)
-            const oversized = newFiles.filter(f => f.size > 2 * 1024 * 1024);
-            if (oversized.length > 0) {
-                showUploadError(`Seuraavat tiedostot ovat liian suuria (max 2MB): ${oversized.map(f => f.name).join(', ')}`);
-                return;
-            }
-            
             if (selectedFiles.length + newFiles.length > MAX_FILES) {
                 const remaining = MAX_FILES - selectedFiles.length;
                 if (remaining <= 0) {
                     showUploadError(`Voit lisätä enintään ${MAX_FILES} kuvaa`);
                     return;
                 }
-                selectedFiles = selectedFiles.concat(newFiles.slice(0, remaining));
                 showUploadError(`Lisättiin ${Math.min(newFiles.length, remaining)} kuvaa. Raja täynnä.`);
-            } else {
-                selectedFiles = selectedFiles.concat(newFiles);
+            }
+            
+            const remaining = MAX_FILES - selectedFiles.length;
+            const filesToProcess = newFiles.slice(0, remaining);
+            
+            // Pakkaa kaikki kuvat
+            const compressionResults = [];
+            for (const file of filesToProcess) {
+                try {
+                    const compressed = await compressImage(file, 1200, 1200, 0.7);
+                    selectedFiles.push(compressed.file);
+                    compressionResults.push(compressed);
+                } catch (error) {
+                    console.error('Virhe kuvan pakkaamisessa:', error);
+                    selectedFiles.push(file);
+                }
+            }
+            
+            // Näytä pakkaustiedot
+            if (compressionResults.length > 0) {
+                const totalOriginal = compressionResults.reduce((sum, r) => sum + r.originalSize, 0);
+                const totalCompressed = compressionResults.reduce((sum, r) => sum + r.compressedSize, 0);
+                const avgReduction = ((totalOriginal - totalCompressed) / totalOriginal * 100).toFixed(1);
+                infoDiv.textContent = `Pakattu ${compressionResults.length} kuvaa: yhteensä ${(totalOriginal / 1024 / 1024).toFixed(2)}MB → ${(totalCompressed / 1024).toFixed(0)}KB (${avgReduction}% pienempi)`;
+                infoDiv.style.display = 'block';
             }
             
             updatePreview();
@@ -1856,6 +1930,7 @@
 
         function clearAllImages() {
             selectedFiles = [];
+            document.getElementById('compressionInfo').style.display = 'none';
             updatePreview();
             updateUpload();
         }
@@ -1881,77 +1956,28 @@
             handleFiles(e.target.files);
         });
 
-        // Muunna tiedosto Data URL:ksi (Base64)
-        function fileToDataURL(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // Form submission - muunna kuvat linkeiksi ennen lähetystä
-        document.getElementById('tilausForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
+        // Form submission - korvaa tiedostot pakatuilla
+        document.getElementById('tilausForm').addEventListener('submit', function(e) {
             document.getElementById('loadingOverlay').classList.add('show');
             document.getElementById('submitBtn').disabled = true;
-            document.getElementById('submitBtn').textContent = 'Muunnetaan kuvia...';
             
-            try {
-                // Muunna logo Data URL:ksi
-                if (logoFile) {
-                    const logoDataUrl = await fileToDataURL(logoFile);
-                    // Lisää piilotettu kenttä logolle
-                    let logoInput = document.getElementById('logoDataUrl');
-                    if (!logoInput) {
-                        logoInput = document.createElement('input');
-                        logoInput.type = 'hidden';
-                        logoInput.name = 'logo_data_url';
-                        logoInput.id = 'logoDataUrl';
-                        this.appendChild(logoInput);
-                    }
-                    logoInput.value = logoDataUrl;
-                }
-                
-                // Muunna kuvat Data URL:eiksi
-                if (selectedFiles.length > 0) {
-                    const imageDataUrls = [];
-                    for (let i = 0; i < selectedFiles.length; i++) {
-                        document.getElementById('submitBtn').textContent = `Muunnetaan kuvaa ${i + 1}/${selectedFiles.length}...`;
-                        const dataUrl = await fileToDataURL(selectedFiles[i]);
-                        imageDataUrls.push(dataUrl);
-                    }
-                    
-                    // Lisää piilotettu kenttä kuville
-                    let imagesInput = document.getElementById('imagesDataUrl');
-                    if (!imagesInput) {
-                        imagesInput = document.createElement('input');
-                        imagesInput.type = 'hidden';
-                        imagesInput.name = 'kuvat_data_url';
-                        imagesInput.id = 'imagesDataUrl';
-                        this.appendChild(imagesInput);
-                    }
-                    imagesInput.value = JSON.stringify(imageDataUrls);
-                }
-                
-                // Poista alkuperäiset file inputit jotteivät ne häiritse
-                document.getElementById('logoInput').disabled = true;
-                document.getElementById('fileInput').disabled = true;
-                
-                document.getElementById('submitBtn').textContent = 'Lähetetään...';
-                
-                // Lähetä lomake
-                this.submit();
-                
-            } catch (error) {
-                console.error('Virhe kuvien muunnossa:', error);
-                alert('Virhe kuvien käsittelyssä. Yritä uudelleen tai lähetä ilman kuvia.');
-                document.getElementById('loadingOverlay').classList.remove('show');
-                document.getElementById('submitBtn').disabled = false;
-                document.getElementById('submitBtn').textContent = 'Lähetä tilaus';
+            // Korvaa logo pakatulla versiolla
+            if (logoFile) {
+                const logoInput = document.getElementById('logoInput');
+                const dt = new DataTransfer();
+                dt.items.add(logoFile);
+                logoInput.files = dt.files;
             }
+            
+            // Korvaa kuvat pakatuilla versioilla
+            if (selectedFiles.length > 0) {
+                const fileInput = document.getElementById('fileInput');
+                const dt = new DataTransfer();
+                selectedFiles.forEach(file => dt.items.add(file));
+                fileInput.files = dt.files;
+            }
+            
+            document.getElementById('loadingText').textContent = 'Lähetetään tilausta...';
         });
 
         // Real-time validation
