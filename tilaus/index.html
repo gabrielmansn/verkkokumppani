@@ -16,6 +16,7 @@
             --bg-warm: #f5f3f0;
             --border: #e0ddd8;
             --error: #dc2626;
+            --success: #16a34a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -241,6 +242,7 @@
         .option-card.selected {
             border-color: var(--primary);
             background: var(--bg-warm);
+            box-shadow: 0 4px 12px rgba(26, 95, 74, 0.15);
         }
 
         .option-card input {
@@ -472,7 +474,12 @@
             color: white;
         }
 
-        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
         .btn-text {
             background: transparent;
@@ -502,6 +509,11 @@
             color: var(--primary);
             cursor: pointer;
             font-size: 0.85rem;
+            text-decoration: underline;
+        }
+
+        .change-link:hover {
+            color: var(--primary-dark);
         }
 
         /* Tyylien värit */
@@ -518,9 +530,59 @@
             font-size: 0.85rem;
             margin-top: 0.5rem;
             display: none;
+            padding: 0.5rem;
+            background: #fef2f2;
+            border-radius: 4px;
+            border-left: 3px solid var(--error);
         }
 
         .error-message.show { display: block; }
+
+        /* Latausindikaattori */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Saavutettavuus */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
 
         @media (max-width: 768px) {
             body { padding: 1rem; }
@@ -537,6 +599,11 @@
 </head>
 <body>
 
+    <div class="loading-overlay" id="loadingOverlay" role="alert" aria-live="polite">
+        <div class="spinner"></div>
+        <p>Lähetetään tilausta...</p>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>Verkkosivujen tilaus</h1>
@@ -544,7 +611,7 @@
         </div>
 
         <div class="form-container">
-            <div class="progress-bar" id="progressBar">
+            <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1" aria-label="Tilauslomakkeen edistyminen">
                 <div class="progress-step active" data-step="1">1</div>
                 <div class="progress-step" data-step="2">2</div>
                 <div class="progress-step" data-step="3">3</div>
@@ -564,18 +631,19 @@
                     <p class="section-subtitle">Kerro meille yrityksestäsi</p>
                     
                     <div class="form-group">
-                        <label>Yrityksen nimi <span class="required">*</span></label>
-                        <input type="text" name="yritysnimi" required placeholder="Esimerkki Oy">
+                        <label for="yritysnimi">Yrityksen nimi <span class="required" aria-label="pakollinen">*</span></label>
+                        <input type="text" name="yritysnimi" id="yritysnimi" required placeholder="Esimerkki Oy" aria-required="true">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Y-tunnus</label>
-                            <input type="text" name="ytunnus" placeholder="1234567-8">
+                            <label for="ytunnus">Y-tunnus</label>
+                            <input type="text" name="ytunnus" id="ytunnus" placeholder="1234567-8" pattern="\d{7}-\d{1}" title="Muoto: 1234567-8">
+                            <div class="hint">Muoto: 1234567-8</div>
                         </div>
                         <div class="form-group">
-                            <label>Toimiala <span class="required">*</span></label>
-                            <select name="toimiala" required>
+                            <label for="toimiala">Toimiala <span class="required" aria-label="pakollinen">*</span></label>
+                            <select name="toimiala" id="toimiala" required aria-required="true">
                                 <option value="">Valitse...</option>
                                 <option value="kampaamo">Kampaamo / Parturi</option>
                                 <option value="kauneushoitola">Kauneushoitola</option>
@@ -588,18 +656,18 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Osoite <span class="required">*</span></label>
-                        <input type="text" name="osoite" required placeholder="Katuosoite, postinumero Kaupunki">
+                        <label for="osoite">Osoite <span class="required" aria-label="pakollinen">*</span></label>
+                        <input type="text" name="osoite" id="osoite" required placeholder="Katuosoite, postinumero Kaupunki" aria-required="true">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Puhelin <span class="required">*</span></label>
-                            <input type="tel" name="puhelin" required placeholder="040 123 4567">
+                            <label for="puhelin">Puhelin <span class="required" aria-label="pakollinen">*</span></label>
+                            <input type="tel" name="puhelin" id="puhelin" required placeholder="040 123 4567" aria-required="true" pattern="[0-9\s\-\+]{7,}" title="Anna kelvollinen puhelinnumero">
                         </div>
                         <div class="form-group">
-                            <label>Sähköposti <span class="required">*</span></label>
-                            <input type="email" name="email" required placeholder="sahkoposti@yritys.fi">
+                            <label for="email">Sähköposti <span class="required" aria-label="pakollinen">*</span></label>
+                            <input type="email" name="email" id="email" required placeholder="sahkoposti@yritys.fi" aria-required="true">
                         </div>
                     </div>
 
@@ -614,11 +682,11 @@
                     <h2 class="section-title">Valitse tyyli</h2>
                     <p class="section-subtitle">Millaisen ilmeen haluat sivuillesi?</p>
                     
-                    <div class="style-grid">
+                    <div class="style-grid" role="radiogroup" aria-label="Valitse tyyli">
                         <label class="style-option" onclick="selectStyle('klassinen')">
                             <input type="radio" name="tyyli_valinta" value="klassinen" required>
                             <div class="style-card">
-                                <div class="style-icon klassinen-bg">K</div>
+                                <div class="style-icon klassinen-bg" aria-hidden="true">K</div>
                                 <div class="style-name">Klassinen</div>
                                 <div class="style-desc">Ajaton elegance ja perinteinen tyyli. Sopii yrityksille, jotka haluavat luotettavan ja arvokkaan imagon.</div>
                             </div>
@@ -627,7 +695,7 @@
                         <label class="style-option" onclick="selectStyle('moderni')">
                             <input type="radio" name="tyyli_valinta" value="moderni">
                             <div class="style-card">
-                                <div class="style-icon moderni-bg">M</div>
+                                <div class="style-icon moderni-bg" aria-hidden="true">M</div>
                                 <div class="style-name">Moderni</div>
                                 <div class="style-desc">Puhtaat linjat ja minimalistinen design. Täydellinen nykyaikaisille yrityksille, jotka arvostavat selkeyttä.</div>
                             </div>
@@ -636,7 +704,7 @@
                         <label class="style-option" onclick="selectStyle('luksus')">
                             <input type="radio" name="tyyli_valinta" value="luksus">
                             <div class="style-card">
-                                <div class="style-icon luksus-bg">L</div>
+                                <div class="style-icon luksus-bg" aria-hidden="true">L</div>
                                 <div class="style-name">Luksus</div>
                                 <div class="style-desc">Kultaa, mustaa ja premium-tunnelmaa. Korosta laatua ja eksklusiivisuutta tämän tyylikkään ilmeen avulla.</div>
                             </div>
@@ -645,7 +713,7 @@
                         <label class="style-option" onclick="selectStyle('kotoisa')">
                             <input type="radio" name="tyyli_valinta" value="kotoisa">
                             <div class="style-card">
-                                <div class="style-icon kotoisa-bg">O</div>
+                                <div class="style-icon kotoisa-bg" aria-hidden="true">O</div>
                                 <div class="style-name">Kotoisa</div>
                                 <div class="style-desc">Lämpimiä sävyjä ja kutsuva tunnelma. Ihanteellinen yrityksille, jotka haluavat välittää läheisyyttä ja mukavuutta.</div>
                             </div>
@@ -654,7 +722,7 @@
                         <label class="style-option" onclick="selectStyle('elegantti')">
                             <input type="radio" name="tyyli_valinta" value="elegantti">
                             <div class="style-card">
-                                <div class="style-icon elegantti-bg">E</div>
+                                <div class="style-icon elegantti-bg" aria-hidden="true">E</div>
                                 <div class="style-name">Elegantti</div>
                                 <div class="style-desc">Hienostunutta kauneutta ja naisellista charmia. Roosaa, kultaa ja pehmeitä muotoja.</div>
                             </div>
@@ -663,7 +731,7 @@
                         <label class="style-option" onclick="selectStyle('creative')">
                             <input type="radio" name="tyyli_valinta" value="creative">
                             <div class="style-card">
-                                <div class="style-icon creative-bg">C</div>
+                                <div class="style-icon creative-bg" aria-hidden="true">C</div>
                                 <div class="style-name">Creative</div>
                                 <div class="style-desc">Rohkeita värejä ja erottuva ilme. Valitse tämä, jos haluat erottua joukosta ja näyttää persoonallisuutesi.</div>
                             </div>
@@ -681,7 +749,7 @@
                     <h2 class="section-title">Valitse fontti</h2>
                     <p class="section-subtitle" id="fonttiSubtitle">Valitse tyyli ensin</p>
                     
-                    <div class="option-grid" id="fonttiGrid">
+                    <div class="option-grid" id="fonttiGrid" role="radiogroup" aria-label="Valitse fontti">
                         <!-- Fontit generoidaan JavaScriptillä -->
                     </div>
 
@@ -699,7 +767,7 @@
                     <h2 class="section-title">Valitse väriteema</h2>
                     <p class="section-subtitle" id="variSubtitle">Valitse tyyli ensin</p>
                     
-                    <div class="option-grid" id="variGrid">
+                    <div class="option-grid" id="variGrid" role="radiogroup" aria-label="Valitse väriteema">
                         <!-- Värit generoidaan JavaScriptillä -->
                     </div>
 
@@ -718,37 +786,37 @@
                     <p class="section-subtitle">Kerro palveluistasi ja lisää kuvia</p>
                     
                     <div class="form-group">
-                        <label>Palvelut <span class="required">*</span></label>
-                        <textarea name="palvelut" required placeholder="Kuvaile mitä palveluita tarjoat..."></textarea>
+                        <label for="palvelut">Palvelut <span class="required" aria-label="pakollinen">*</span></label>
+                        <textarea name="palvelut" id="palvelut" required placeholder="Kuvaile mitä palveluita tarjoat..." aria-required="true"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Hinnasto</label>
-                        <textarea name="hinnasto" placeholder="Palvelut ja hinnat..."></textarea>
+                        <label for="hinnasto">Hinnasto</label>
+                        <textarea name="hinnasto" id="hinnasto" placeholder="Palvelut ja hinnat..."></textarea>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Avoinnaoloajat</label>
-                            <input type="text" name="aukiolo" placeholder="Ma-pe 9-17">
+                            <label for="aukiolo">Avoinnaoloajat</label>
+                            <input type="text" name="aukiolo" id="aukiolo" placeholder="Ma-pe 9-17">
                         </div>
                         <div class="form-group">
-                            <label>Instagram</label>
-                            <input type="text" name="instagram" placeholder="@yritys">
+                            <label for="instagram">Instagram</label>
+                            <input type="text" name="instagram" id="instagram" placeholder="@yritys">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Facebook</label>
-                        <input type="text" name="facebook" placeholder="Yrityksen nimi">
+                        <label for="facebook">Facebook</label>
+                        <input type="text" name="facebook" id="facebook" placeholder="Yrityksen nimi">
                     </div>
 
-                    <!-- Päivitetty kuvaosio 10 kuvan tuella -->
+                    <!-- Kuvaosio - Netlify-yhteensopiva -->
                     <div class="form-group">
-                        <label>Lisää kuvat (valinnainen, max 10 kuvaa)</label>
+                        <label for="kuvat">Lisää kuvat (valinnainen, max 10 kuvaa)</label>
                         <div class="file-upload-area" id="dropZone">
-                            <input type="file" name="kuvat" id="fileInput" multiple accept="image/*" onchange="handleFiles(this.files)">
-                            <div class="upload-icon">📁</div>
+                            <input type="file" name="kuvat" id="fileInput" multiple accept="image/*">
+                            <div class="upload-icon" aria-hidden="true">📁</div>
                             <div class="upload-text">
                                 <strong>Klikkaa lisätäksesi kuvia</strong>
                                 <span>tai raahaa ne tähän</span>
@@ -757,7 +825,7 @@
                                 Voit lisätä enintään 10 kuvaa • Tuettuja muotoja: JPG, PNG, GIF
                             </div>
                         </div>
-                        <div class="error-message" id="uploadError"></div>
+                        <div class="error-message" id="uploadError" role="alert"></div>
                         
                         <div class="image-preview-container" id="imagePreviewContainer">
                             <div class="preview-header">
@@ -769,8 +837,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Valitse paketti <span class="required">*</span></label>
-                        <select name="paketti" required>
+                        <label for="paketti">Valitse paketti <span class="required" aria-label="pakollinen">*</span></label>
+                        <select name="paketti" id="paketti" required aria-required="true">
                             <option value="">Valitse...</option>
                             <option value="perus">Perus - 150€ + 10€/kk</option>
                             <option value="yritys">Yritys - 390€ + 15€/kk</option>
@@ -780,8 +848,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Lisätoiveet</label>
-                        <textarea name="toiveet" placeholder="Ajanvaraus, galleria, blogi, lahjakortit..."></textarea>
+                        <label for="toiveet">Lisätoiveet</label>
+                        <textarea name="toiveet" id="toiveet" placeholder="Ajanvaraus, galleria, blogi, lahjakortit..."></textarea>
                     </div>
 
                     <!-- Yhteenveto -->
@@ -789,15 +857,15 @@
                         <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Valintasi</h3>
                         <div class="summary-item">
                             <span>Tyyli:</span>
-                            <span id="summaryTyyli" class="change-link" onclick="goToStep(2)">Vaihda</span>
+                            <span id="summaryTyyli" class="change-link" onclick="goToStep(2)" role="button" tabindex="0">Vaihda</span>
                         </div>
                         <div class="summary-item">
                             <span>Fontti:</span>
-                            <span id="summaryFontti" class="change-link" onclick="goToStep(3)">Vaihda</span>
+                            <span id="summaryFontti" class="change-link" onclick="goToStep(3)" role="button" tabindex="0">Vaihda</span>
                         </div>
                         <div class="summary-item">
                             <span>Väriteema:</span>
-                            <span id="summaryVari" class="change-link" onclick="goToStep(4)">Vaihda</span>
+                            <span id="summaryVari" class="change-link" onclick="goToStep(4)" role="button" tabindex="0">Vaihda</span>
                         </div>
                     </div>
 
@@ -805,7 +873,7 @@
                         <button type="button" class="btn btn-secondary" onclick="prevStep()">← Takaisin</button>
                         <div>
                             <button type="button" class="btn btn-text" onclick="goToStep(2)">Vaihda tyyliä</button>
-                            <button type="submit" class="btn btn-primary">Lähetä tilaus</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Lähetä tilaus</button>
                         </div>
                     </div>
                 </div>
@@ -941,7 +1009,7 @@
             document.getElementById('fonttiSubtitle').textContent = `Valitse ${tyyli.nimi.toLowerCase()} tyyliin sopiva fontti`;
             
             grid.innerHTML = tyyli.fontit.map((font, index) => `
-                <label class="option-card" onclick="selectFont('${font.nimi}')" id="font-${index}">
+                <label class="option-card" onclick="selectFont('${font.nimi}', this)" id="font-${index}">
                     <input type="radio" name="fontti_valinta" value="${font.nimi}" required>
                     <div class="font-preview" style="font-family: '${font.class}'">${font.esimerkki}</div>
                     <div class="font-name">${font.nimi}</div>
@@ -949,11 +1017,22 @@
             `).join('');
         }
 
-        function selectFont(fontName) {
+        function selectFont(fontName, element) {
             document.getElementById('valittuFontti').value = fontName;
             document.getElementById('fonttiSeuraava').disabled = false;
-            document.querySelectorAll('#fonttiGrid .option-card').forEach(card => card.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
+            
+            // Poista selected-luokka kaikista
+            document.querySelectorAll('#fonttiGrid .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Lisää selected-luokka klikattuun
+            element.classList.add('selected');
+            
+            // Aseta radio-button valituksi
+            const radio = element.querySelector('input[type="radio"]');
+            if(radio) radio.checked = true;
+            
             updateSummary();
         }
 
@@ -966,7 +1045,7 @@
             document.getElementById('variSubtitle').textContent = `Valitse ${tyyli.nimi.toLowerCase()} tyyliin sopiva väriteema`;
             
             grid.innerHTML = tyyli.varit.map((vari, index) => `
-                <label class="option-card" onclick="selectColor('${vari.nimi}')" id="color-${index}">
+                <label class="option-card" onclick="selectColor('${vari.nimi}', this)" id="color-${index}">
                     <input type="radio" name="vari_valinta" value="${vari.nimi}" required>
                     <div class="color-preview" style="background: ${vari.gradient}"></div>
                     <div class="color-name">${vari.nimi}</div>
@@ -974,11 +1053,22 @@
             `).join('');
         }
 
-        function selectColor(colorName) {
+        function selectColor(colorName, element) {
             document.getElementById('valittuVariteema').value = colorName;
             document.getElementById('variSeuraava').disabled = false;
-            document.querySelectorAll('#variGrid .option-card').forEach(card => card.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
+            
+            // Poista selected-luokka kaikista
+            document.querySelectorAll('#variGrid .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Lisää selected-luokka klikattuun
+            element.classList.add('selected');
+            
+            // Aseta radio-button valituksi
+            const radio = element.querySelector('input[type="radio"]');
+            if(radio) radio.checked = true;
+            
             updateSummary();
         }
 
@@ -1001,6 +1091,10 @@
                     step.classList.add('active');
                 }
             });
+            
+            // Päivitä ARIA-attribuutit
+            const progressBar = document.getElementById('progressBar');
+            progressBar.setAttribute('aria-valuenow', currentStep);
         }
 
         function showStep(step) {
@@ -1019,15 +1113,24 @@
             let valid = true;
 
             requiredFields.forEach(field => {
-                if (!field.value) {
+                if (!field.value.trim()) {
                     field.style.borderColor = '#dc2626';
+                    field.setAttribute('aria-invalid', 'true');
                     valid = false;
                 } else {
                     field.style.borderColor = '';
+                    field.setAttribute('aria-invalid', 'false');
                 }
             });
 
-            if (!valid) return;
+            if (!valid) {
+                // Näytä virheilmoitus ensimmäisestä virheellisestä kentästä
+                const firstError = currentSection.querySelector('[aria-invalid="true"]');
+                if (firstError) {
+                    firstError.focus();
+                }
+                return;
+            }
 
             if (currentStep === 2) generateFontOptions();
             if (currentStep === 3) generateColorOptions();
@@ -1047,7 +1150,7 @@
             showStep(step);
         }
 
-        // Päivitetty kuvien käsittely 10 kuvan tuella
+        // Kuvien käsittely - Netlify-yhteensopiva versio
         function handleFiles(files) {
             const errorDiv = document.getElementById('uploadError');
             const dropZone = document.getElementById('dropZone');
@@ -1081,6 +1184,7 @@
             
             updateImagePreview();
             updateUploadArea();
+            updateFileInput();
         }
 
         function showError(message) {
@@ -1115,12 +1219,18 @@
                 const url = URL.createObjectURL(file);
                 return `
                     <div class="image-preview-item">
-                        <img src="${url}" alt="${file.name}">
-                        <button type="button" class="image-remove-btn" onclick="removeImage(${index})">×</button>
-                        <div class="image-file-name" title="${file.name}">${file.name}</div>
+                        <img src="${url}" alt="${escapeHtml(file.name)}">
+                        <button type="button" class="image-remove-btn" onclick="removeImage(${index})" aria-label="Poista kuva ${escapeHtml(file.name)}">×</button>
+                        <div class="image-file-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</div>
                     </div>
                 `;
             }).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function updateUploadArea() {
@@ -1136,16 +1246,30 @@
             }
         }
 
+        // Tärkeä: Päivitä oikea file input DataTransfer API:lla
+        function updateFileInput() {
+            const fileInput = document.getElementById('fileInput');
+            const dataTransfer = new DataTransfer();
+            
+            selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+            
+            fileInput.files = dataTransfer.files;
+        }
+
         function removeImage(index) {
             selectedFiles.splice(index, 1);
             updateImagePreview();
             updateUploadArea();
+            updateFileInput();
         }
 
         function clearAllImages() {
             selectedFiles = [];
             updateImagePreview();
             updateUploadArea();
+            updateFileInput();
         }
 
         // Drag and drop -parannukset
@@ -1177,10 +1301,59 @@
             }
         });
 
-        // Validointi
+        // Native file input change handler
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            handleFiles(e.target.files);
+        });
+
+        // Lomakkeen lähetys
+        document.getElementById('tilausForm').addEventListener('submit', function(e) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Näytä latausindikaattori
+            loadingOverlay.classList.add('show');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Lähetetään...';
+            
+            // Lomake lähetetään normaalisti - ei estetä oletustoimintaa
+        });
+
+        // Validoinnin parannus reaaliaikaisesti
         document.querySelectorAll('input, textarea, select').forEach(field => {
             field.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.style.borderColor = '';
+                    this.setAttribute('aria-invalid', 'false');
+                }
+            });
+            
+            field.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value.trim()) {
+                    this.style.borderColor = '#dc2626';
+                    this.setAttribute('aria-invalid', 'true');
+                }
+            });
+        });
+
+        // Y-tunnuksen validointi
+        document.getElementById('ytunnus').addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value && !/^\d{7}-\d{1}$/.test(value)) {
+                this.style.borderColor = '#dc2626';
+                showError('Y-tunnuksen muoto on virheellinen. Käytä muotoa: 1234567-8');
+            } else {
                 this.style.borderColor = '';
+            }
+        });
+
+        // Näppäimistönavigointi yhteenvedon vaihtolinkkeihin
+        document.querySelectorAll('.change-link').forEach(link => {
+            link.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
             });
         });
     </script>
