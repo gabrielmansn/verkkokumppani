@@ -1031,6 +1031,60 @@
             .image-preview-grid { grid-template-columns: repeat(3, 1fr); }
             .color-picker-wrapper { grid-template-columns: 1fr; }
         }
+
+        /* Hinnasto tabs */
+        .hinnasto-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .hinnasto-tab {
+            padding: 0.45rem 1.1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+        .hinnasto-tab.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+        .hinnasto-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            background: var(--bg);
+        }
+        .hinnasto-upload-area:hover { border-color: var(--primary); background: var(--bg-warm); }
+        .hinnasto-upload-area.dragover { border-color: var(--primary); background: var(--bg-warm); transform: scale(1.01); }
+        .hinnasto-upload-area input[type="file"] {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; cursor: pointer;
+        }
+        .hinnasto-file-info {
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.7rem 1rem;
+            background: #f0f7f4;
+            border: 1.5px solid var(--primary);
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .hinnasto-file-info.show { display: flex; }
+        .hinnasto-file-info .remove-btn {
+            margin-left: auto; background: none; border: none;
+            cursor: pointer; color: var(--error); font-size: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -1163,10 +1217,10 @@
                         </label>
 
                         <label class="style-option" onclick="selectStyle('creative')">
-                            <input type="radio" name="valittu_tyyli" value="Creative">
+                            <input type="radio" name="valittu_tyyli" value="Luova">
                             <div class="style-card creative">
-                                <div class="style-icon">C</div>
-                                <div class="style-name">Creative</div>
+                                <div class="style-icon">L</div>
+                                <div class="style-name">Luova</div>
                                 <div class="style-desc">Rohkeita värejä ja erottuva ilme. Valitse tämä, jos haluat erottua joukosta ja näyttää persoonallisuutesi.</div>
                             </div>
                         </label>
@@ -1249,8 +1303,31 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="hinnasto">Hinnasto</label>
-                        <textarea name="hinnasto" id="hinnasto" placeholder="Palvelut ja hinnat..."></textarea>
+                        <label>Hinnasto</label>
+                        <div class="hinnasto-tabs">
+                            <button type="button" class="hinnasto-tab active" onclick="switchHinnasto('text')">Kirjoita itse</button>
+                            <button type="button" class="hinnasto-tab" onclick="switchHinnasto('file')">Lataa tiedosto</button>
+                        </div>
+                        <div id="hinnastoTextSection">
+                            <textarea name="hinnasto" id="hinnasto" placeholder="Palvelut ja hinnat..."></textarea>
+                        </div>
+                        <div id="hinnastoFileSection" style="display:none;">
+                            <div class="hinnasto-upload-area" id="hinnastoDropZone">
+                                <input type="file" name="hinnasto_tiedosto" id="hinnastoFileInput"
+                                    accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.odt,.ods,.rtf,.csv">
+                                <div class="upload-icon">📄</div>
+                                <div class="upload-text">
+                                    <strong>Raahaa tiedosto tähän</strong>
+                                    <span>tai klikkaa valitaksesi</span>
+                                </div>
+                                <div class="upload-limit">PDF, Word (.doc/.docx), Excel, TXT, RTF...</div>
+                            </div>
+                            <div class="hinnasto-file-info" id="hinnastoFileInfo">
+                                <span>📄</span>
+                                <span id="hinnastoFileName"></span>
+                                <button type="button" class="remove-btn" onclick="clearHinnastoFile()">✕ Poista</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-row">
@@ -1321,24 +1398,23 @@
                     <!-- UUSI TEKSTIKENTTÄ: Kerro vapaasti toiveistasi -->
                     <div class="form-group">
                         <label for="vapaat_toiveet">Kerro vapaasti toiveistasi</label>
-                        <textarea name="vapaat_toiveet" id="vapaat_toiveet" placeholder="Tässä voit kuvailla vapaasti, millaiset sivut haluat – esimerkiksi tyyli, värit, tunnelma, toiminnallisuudet tai mikä tahansa muu toive. Voit myös liittää linkkejä inspiraatioksi!"></textarea>
-                        <div class="hint">Kerro meille vapaamuotoisesti, mitä sivuiltasi toivot. Voit kuvailla esimerkiksi haluamaasi ilmettä, värejä, sommittelua tai erityistoiveita.</div>
+                        <textarea name="vapaat_toiveet" id="vapaat_toiveet" placeholder="Kerro tähän vapaasti toiveistasi. Mitä tyyliä, tunnelmaa tai värejä kaipaat? Onko olemassa sivustoja, joista pidät? Mitä haluat sivuillasi ehdottomasti olevan? Mitä yksityiskohtia pidät tärkeänä? Mitä enemmän kerrot, sitä paremmin voimme toteuttaa juuri sinulle sopivat sivut. Voit myös liittää linkkejä inspiraatioksi!"></textarea>
+                        <div class="hint">Mitä tarkemmin kerrot toiveistasi, sitä paremmin pystymme toteuttaa juuri sinulle sopivat sivut. Ei ole vääriä vastauksia!</div>
                     </div>
 
                     <div class="form-group">
                         <label for="paketti">Valitse paketti <span class="required">*</span></label>
                         <select name="paketti" id="paketti" required>
                             <option value="">Valitse...</option>
-                            <option value="perus">Perus - 150€ + 10€/kk</option>
-                            <option value="yritys">Yritys - 390€ + 15€/kk</option>
-                            <option value="premium">Premium - 590€ + 25€/kk</option>
-                            <option value="ei_tieda">En ole varma - keskustellaan</option>
+                            <option value="12kk">169 € + 8,90 € / kk (laskutus 12 kk välein)</option>
+                            <option value="1kk">169 € + 8,90 € / kk (laskutus 1 kk välein)</option>
+                            <option value="ei_tieda">En ole varma, keskustellaan</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="toiveet">Lisätoiveet</label>
-                        <textarea name="toiveet" id="toiveet" placeholder="Ajanvaraus, galleria, blogi, lahjakortit..."></textarea>
+                        <textarea name="toiveet" id="toiveet" placeholder="Galleria, blogi, lahjakortit..."></textarea>
                     </div>
 
                     <div class="summary-box">
@@ -2007,6 +2083,59 @@
             }
             
             document.getElementById('loadingText').textContent = 'Lähetetään tilausta...';
+        });
+
+        // Hinnasto – vaihda teksti/tiedosto
+        function switchHinnasto(mode) {
+            const tabs = document.querySelectorAll('.hinnasto-tab');
+            const textSection = document.getElementById('hinnastoTextSection');
+            const fileSection = document.getElementById('hinnastoFileSection');
+            if (mode === 'text') {
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+                textSection.style.display = '';
+                fileSection.style.display = 'none';
+                document.getElementById('hinnastoFileInput').value = '';
+                document.getElementById('hinnastoFileInfo').classList.remove('show');
+            } else {
+                tabs[0].classList.remove('active');
+                tabs[1].classList.add('active');
+                textSection.style.display = 'none';
+                fileSection.style.display = '';
+                document.getElementById('hinnasto').value = '';
+            }
+        }
+
+        document.getElementById('hinnastoFileInput').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                document.getElementById('hinnastoFileName').textContent = e.target.files[0].name;
+                document.getElementById('hinnastoFileInfo').classList.add('show');
+            }
+        });
+
+        function clearHinnastoFile() {
+            document.getElementById('hinnastoFileInput').value = '';
+            document.getElementById('hinnastoFileInfo').classList.remove('show');
+        }
+
+        // Drag & drop hinnasto
+        const hinnastoDropZone = document.getElementById('hinnastoDropZone');
+        ['dragenter', 'dragover'].forEach(ev => {
+            hinnastoDropZone.addEventListener(ev, e => { e.preventDefault(); hinnastoDropZone.classList.add('dragover'); });
+        });
+        ['dragleave', 'drop'].forEach(ev => {
+            hinnastoDropZone.addEventListener(ev, e => { hinnastoDropZone.classList.remove('dragover'); });
+        });
+        hinnastoDropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const dt = new DataTransfer();
+                dt.items.add(files[0]);
+                document.getElementById('hinnastoFileInput').files = dt.files;
+                document.getElementById('hinnastoFileName').textContent = files[0].name;
+                document.getElementById('hinnastoFileInfo').classList.add('show');
+            }
         });
 
         // Real-time validation
