@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fi">
 <head>
@@ -714,6 +715,24 @@
             display: inline-block;
         }
 
+        .upload-alternative {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .upload-alternative a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .upload-alternative a:hover {
+            text-decoration: underline;
+        }
+
         .logo-upload-area {
             border: 2px dashed #667eea;
             border-radius: 12px;
@@ -1284,6 +1303,9 @@
                                 <span>tai raahaa ne tähän</span>
                             </div>
                             <div class="upload-limit">Max 10 kuvaa • Kuvat pakataan automaattisesti ennen lähetystä</div>
+                            <div class="upload-alternative">
+                                tai lähetä sähköpostilla <a href="mailto:sivut@sivutnopeasti.fi">sivut@sivutnopeasti.fi</a>
+                            </div>
                         </div>
                         <div class="error-message" id="uploadError"></div>
                         <div class="compression-info" id="compressionInfo" style="display: none;"></div>
@@ -1294,6 +1316,13 @@
                             </div>
                             <div class="image-preview-grid" id="imagePreviewGrid"></div>
                         </div>
+                    </div>
+
+                    <!-- UUSI TEKSTIKENTTÄ: Kerro vapaasti toiveistasi -->
+                    <div class="form-group">
+                        <label for="vapaat_toiveet">Kerro vapaasti toiveistasi</label>
+                        <textarea name="vapaat_toiveet" id="vapaat_toiveet" placeholder="Tässä voit kuvailla vapaasti, millaiset sivut haluat – esimerkiksi tyyli, värit, tunnelma, toiminnallisuudet tai mikä tahansa muu toive. Voit myös liittää linkkejä inspiraatioksi!"></textarea>
+                        <div class="hint">Kerro meille vapaamuotoisesti, mitä sivuiltasi toivot. Voit kuvailla esimerkiksi haluamaasi ilmettä, värejä, sommittelua tai erityistoiveita.</div>
                     </div>
 
                     <div class="form-group">
